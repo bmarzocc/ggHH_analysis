@@ -1078,41 +1078,58 @@ int main(int argc, char** argv)
        std::string doCUT = cutString[ii]+catString[jj];
        gStyle->SetOptStat(1110); 
        //gStyle->SetOptStat(0000); 
-       compareHistos(h_ref_PhoPt[jj][ii], h_PhoPt[jj][ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_PhoEta[jj][ii], h_PhoEta[jj][ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_PhoPhi[jj][ii], h_PhoPhi[jj][ii], std::string("g_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_PhoR9[jj][ii], h_PhoR9[jj][ii], std::string("g_r9"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_PhoHoE[jj][ii], h_PhoHoE[jj][ii], std::string("g_hoe"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_PhoSieie[jj][ii], h_PhoSieie[jj][ii], std::string("g_sieie"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
 
-       compareHistos(h_ref_DiPhoPt[jj][ii], h_DiPhoPt[jj][ii], std::string("gg_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoEta[jj][ii], h_DiPhoEta[jj][ii], std::string("gg_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoPhi[jj][ii], h_DiPhoPhi[jj][ii], std::string("gg_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoDeltaR[jj][ii], h_DiPhoDeltaR[jj][ii], std::string("gg_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoInvMass[jj][ii], h_DiPhoInvMass[jj][ii], std::string("gg_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoCosthetastar[jj][ii], h_DiPhoCosthetastar[jj][ii], std::string("gg_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       double INT;
+       double INT_REF;
+
+       if(jj == 0){
+          INT = h_NEvents[ii]->Integral();
+          INT_REF = h_ref_NEvents[ii]->Integral();
+       }
+       if(jj == 1){
+          INT = h_NEvents_1btag[ii]->Integral();
+          INT_REF = h_ref_NEvents_1btag[ii]->Integral();
+       }
+       if(jj == 2){
+          INT = h_NEvents_2btag[ii]->Integral();
+          INT_REF = h_ref_NEvents_2btag[ii]->Integral();
+       }
+       
+       compareHistos(h_ref_PhoPt[jj][ii], h_PhoPt[jj][ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_PhoEta[jj][ii], h_PhoEta[jj][ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_PhoPhi[jj][ii], h_PhoPhi[jj][ii], std::string("g_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_PhoR9[jj][ii], h_PhoR9[jj][ii], std::string("g_r9"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_PhoHoE[jj][ii], h_PhoHoE[jj][ii], std::string("g_hoe"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_PhoSieie[jj][ii], h_PhoSieie[jj][ii], std::string("g_sieie"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+
+       compareHistos(h_ref_DiPhoPt[jj][ii], h_DiPhoPt[jj][ii], std::string("gg_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoEta[jj][ii], h_DiPhoEta[jj][ii], std::string("gg_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoPhi[jj][ii], h_DiPhoPhi[jj][ii], std::string("gg_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoDeltaR[jj][ii], h_DiPhoDeltaR[jj][ii], std::string("gg_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoInvMass[jj][ii], h_DiPhoInvMass[jj][ii], std::string("gg_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoCosthetastar[jj][ii], h_DiPhoCosthetastar[jj][ii], std::string("gg_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
   
-       compareHistos(h_ref_jetPt[jj][ii], h_jetPt[jj][ii], std::string("j_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_jetEta[jj][ii], h_jetEta[jj][ii], std::string("j_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_jetPhi[jj][ii], h_jetPhi[jj][ii], std::string("j_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_jetcsvBtag[jj][ii], h_jetcsvBtag[jj][ii], std::string("j_csvBtag"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);  
-       compareHistos(h_ref_jetbetaStarClassic[jj][ii], h_jetbetaStarClassic[jj][ii], std::string("j_betaStarClassic"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_jetdR2Mean[jj][ii], h_jetdR2Mean[jj][ii], std::string("j_dR2Mean"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetPt[jj][ii], h_jetPt[jj][ii], std::string("j_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_jetEta[jj][ii], h_jetEta[jj][ii], std::string("j_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_jetPhi[jj][ii], h_jetPhi[jj][ii], std::string("j_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_jetcsvBtag[jj][ii], h_jetcsvBtag[jj][ii], std::string("j_csvBtag"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);  
+       compareHistos(h_ref_jetbetaStarClassic[jj][ii], h_jetbetaStarClassic[jj][ii], std::string("j_betaStarClassic"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_jetdR2Mean[jj][ii], h_jetdR2Mean[jj][ii], std::string("j_dR2Mean"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
 
-       compareHistos(h_ref_DijetPt[jj][ii], h_DijetPt[jj][ii], std::string("jj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DijetEta[jj][ii], h_DijetEta[jj][ii], std::string("jj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DijetPhi[jj][ii], h_DijetPhi[jj][ii], std::string("jj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DijetDeltaR[jj][ii], h_DijetDeltaR[jj][ii], std::string("jj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DijetInvMass[jj][ii], h_DijetInvMass[jj][ii], std::string("jj_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DijetCosthetastar[jj][ii], h_DijetCosthetastar[jj][ii], std::string("jj_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetPt[jj][ii], h_DijetPt[jj][ii], std::string("jj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DijetEta[jj][ii], h_DijetEta[jj][ii], std::string("jj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DijetPhi[jj][ii], h_DijetPhi[jj][ii], std::string("jj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DijetDeltaR[jj][ii], h_DijetDeltaR[jj][ii], std::string("jj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DijetInvMass[jj][ii], h_DijetInvMass[jj][ii], std::string("jj_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DijetCosthetastar[jj][ii], h_DijetCosthetastar[jj][ii], std::string("jj_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
 
-       compareHistos(h_ref_minPhojetDeltaR[jj][ii], h_minPhojetDeltaR[jj][ii], std::string("minGJ_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
+       compareHistos(h_ref_minPhojetDeltaR[jj][ii], h_minPhojetDeltaR[jj][ii], std::string("minGJ_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF); 
 
-       compareHistos(h_ref_DiPhoDijetDeltaR[jj][ii], h_DiPhoDijetDeltaR[jj][ii], std::string("ggjj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoDijetPt[jj][ii], h_DiPhoDijetPt[jj][ii], std::string("ggjj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoDijetEta[jj][ii], h_DiPhoDijetEta[jj][ii], std::string("ggjj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoDijetPhi[jj][ii], h_DiPhoDijetPhi[jj][ii], std::string("ggjj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-       compareHistos(h_ref_DiPhoDijetInvMass[jj][ii], h_DiPhoDijetInvMass[jj][ii], std::string("ggjj_mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
+       compareHistos(h_ref_DiPhoDijetDeltaR[jj][ii], h_DiPhoDijetDeltaR[jj][ii], std::string("ggjj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoDijetPt[jj][ii], h_DiPhoDijetPt[jj][ii], std::string("ggjj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoDijetEta[jj][ii], h_DiPhoDijetEta[jj][ii], std::string("ggjj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoDijetPhi[jj][ii], h_DiPhoDijetPhi[jj][ii], std::string("ggjj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_DiPhoDijetInvMass[jj][ii], h_DiPhoDijetInvMass[jj][ii], std::string("ggjj_mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF); 
 
        //gStyle->SetOptStat(1110); 
        gStyle->SetOptStat(0000); 
