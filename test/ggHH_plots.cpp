@@ -74,7 +74,7 @@ int main(int argc, char** argv)
   std::string inputCutList = gConfigParser -> readStringOption("Input::inputCutList");
 
   std::string outputDir = gConfigParser -> readStringOption("Output::outputDir");
-  
+
   TChain* ntu_ref = new TChain(inputTreeRef.c_str());
   ntu_ref->Add(inputRef.c_str());
 
@@ -144,6 +144,11 @@ int main(int argc, char** argv)
 
   for(unsigned int ii = 1; ii < cutString.size(); ii++)
       cutString[ii] = "_cuts" + cutString[ii];
+
+  std::map<int,std::string> catString;
+  catString[0] = "";
+  catString[1] = "_1btag";
+  catString[2] = "_2btag";
 
   int           category;
   float         evweight;
@@ -424,51 +429,53 @@ int main(int argc, char** argv)
   std::map<int,TH1F*> h_NEvents_SB;
   std::map<int,TH1F*> h_NEvents_1btag_SB;
   std::map<int,TH1F*> h_NEvents_2btag_SB;
-  std::map<int,TH1F*> h_PhoPt; 
-  std::map<int,TH1F*> h_PhoEta;
-  std::map<int,TH1F*> h_PhoPhi; 
-  std::map<int,TH1F*> h_PhoR9; 
-  std::map<int,TH1F*> h_PhoHoE; 
-  std::map<int,TH1F*> h_PhoSieie; 
-  std::map<int,TH1F*> h_DiPhoPt;
+
+  std::map<int,std::map<int,TH1F*> > h_PhoPt; 
+  std::map<int,std::map<int,TH1F*> > h_PhoEta;
+  std::map<int,std::map<int,TH1F*> > h_PhoPhi; 
+  std::map<int,std::map<int,TH1F*> > h_PhoR9; 
+  std::map<int,std::map<int,TH1F*> > h_PhoHoE; 
+  std::map<int,std::map<int,TH1F*> > h_PhoSieie; 
+  std::map<int,std::map<int,TH1F*> > h_DiPhoPt;
   std::map<int,TH1F*> h_DiPhoPt_SB;
   std::map<int,TH1F*> h_DiPhoPt_1btag_SB;
   std::map<int,TH1F*> h_DiPhoPt_2btag_SB;
-  std::map<int,TH1F*> h_DiPhoEta;
-  std::map<int,TH1F*> h_DiPhoPhi;
-  std::map<int,TH1F*> h_DiPhoDeltaR;
-  std::map<int,TH1F*> h_DiPhoInvMass;
-  std::map<int,TH1F*> h_DiPhoCosthetastar;
-  std::map<int,TH1F*> h_jetPt;
-  std::map<int,TH1F*> h_jetEta;
-  std::map<int,TH1F*> h_jetPhi;
-  std::map<int,TH1F*> h_jetcsvBtag;
-  std::map<int,TH1F*> h_jetbetaStarClassic;
-  std::map<int,TH1F*> h_jetdR2Mean;
-  std::map<int,TH1F*> h_DijetPt;
-  std::map<int,TH1F*> h_DijetEta;
-  std::map<int,TH1F*> h_DijetPhi;
-  std::map<int,TH1F*> h_DijetDeltaR;
-  std::map<int,TH1F*> h_DijetInvMass;
-  std::map<int,TH1F*> h_DijetCosthetastar;
-  std::map<int,TH1F*> h_minPhojetDeltaR;
-  std::map<int,TH1F*> h_DiPhoDijetDeltaR;
-  std::map<int,TH1F*> h_DiPhoDijetPt;
-  std::map<int,TH1F*> h_DiPhoDijetEta;
-  std::map<int,TH1F*> h_DiPhoDijetPhi;
-  std::map<int,TH1F*> h_DiPhoDijetInvMass;
-  std::map<int,TH2F*> h2_Pho1Pt_vs_jet1Pt;
-  std::map<int,TH2F*> h2_Pho2Pt_vs_jet2Pt;
-  std::map<int,TH2F*> h2_Pho1Eta_vs_jet1Eta;
-  std::map<int,TH2F*> h2_Pho2Eta_vs_jet2Eta;
-  std::map<int,TH2F*> h2_Pho1Phi_vs_jet1Phi;
-  std::map<int,TH2F*> h2_Pho2Phi_vs_jet2Phi;
-  std::map<int,TH2F*> h2_DiPhoInvMass_vs_DijetInvMass;
-  std::map<int,TH2F*> h2_DiPhoPt_vs_DijetPt;
-  std::map<int,TH2F*> h2_DiPhoEta_vs_DijetEta;
-  std::map<int,TH2F*> h2_DiPhoPhi_vs_DijetPhi;
-  std::map<int,TH2F*> h2_DiPhoDeltaR_vs_DijetDeltaR;
-  std::map<int,TH2F*> h2_DiPhoCosthetastar_vs_DijetCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoEta;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoPhi;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoInvMass;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_jetPt;
+  std::map<int,std::map<int,TH1F*> > h_jetEta;
+  std::map<int,std::map<int,TH1F*> > h_jetPhi;
+  std::map<int,std::map<int,TH1F*> > h_jetcsvBtag;
+  std::map<int,std::map<int,TH1F*> > h_jetbetaStarClassic;
+  std::map<int,std::map<int,TH1F*> > h_jetdR2Mean;
+  std::map<int,std::map<int,TH1F*> > h_DijetPt;
+  std::map<int,std::map<int,TH1F*> > h_DijetEta;
+  std::map<int,std::map<int,TH1F*> > h_DijetPhi;
+  std::map<int,std::map<int,TH1F*> > h_DijetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_DijetInvMass;
+  std::map<int,std::map<int,TH1F*> > h_DijetCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_minPhojetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDijetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDijetPt;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDijetEta;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDijetPhi;
+  std::map<int,std::map<int,TH1F*> > h_DiPhoDijetInvMass;
+  std::map<int,std::map<int,TH2F*> > h2_Pho1Pt_vs_jet1Pt;
+  std::map<int,std::map<int,TH2F*> > h2_Pho2Pt_vs_jet2Pt;
+  std::map<int,std::map<int,TH2F*> > h2_Pho1Eta_vs_jet1Eta;
+  std::map<int,std::map<int,TH2F*> > h2_Pho2Eta_vs_jet2Eta;
+  std::map<int,std::map<int,TH2F*> > h2_Pho1Phi_vs_jet1Phi;
+  std::map<int,std::map<int,TH2F*> > h2_Pho2Phi_vs_jet2Phi;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoInvMass_vs_DijetInvMass;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoPt_vs_DijetPt;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoEta_vs_DijetEta;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoPhi_vs_DijetPhi;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoDeltaR_vs_DijetDeltaR;
+  std::map<int,std::map<int,TH2F*> > h2_DiPhoCosthetastar_vs_DijetCosthetastar;
+
 
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
    h_NEvents[ii] = new TH1F((std::string("h_NEvents")+cutString[ii]).c_str(),(std::string("h_NEvents")+cutString[ii]).c_str(),100000000,0,100000000);
@@ -477,52 +484,57 @@ int main(int argc, char** argv)
    h_NEvents_SB[ii] = new TH1F((std::string("h_NEvents_SB")+cutString[ii]).c_str(),(std::string("h_NEvents_SB")+cutString[ii]).c_str(),100000000,0,100000000);
    h_NEvents_1btag_SB[ii] = new TH1F((std::string("h_NEvents_1btag_SB")+cutString[ii]).c_str(),(std::string("h_NEvents_1btag")+cutString[ii]).c_str(),100000000,0,100000000);
    h_NEvents_2btag_SB[ii] = new TH1F((std::string("h_NEvents_2btag_SB")+cutString[ii]).c_str(),(std::string("h_NEvents_2btag_SB")+cutString[ii]).c_str(),100000000,0,100000000);
-   h_PhoPt[ii] = new TH1F((std::string("h_PhoPt")+cutString[ii]).c_str(),(std::string("h_PhoPt")+cutString[ii]).c_str(),100,0.,500.);
-   h_PhoEta[ii] = new TH1F((std::string("h_PhoEta")+cutString[ii]).c_str(),(std::string("h_PhoEta")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_PhoPhi[ii] = new TH1F((std::string("h_PhoPhi")+cutString[ii]).c_str(),(std::string("h_PhoPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_PhoR9[ii] = new TH1F((std::string("h_PhoR9")+cutString[ii]).c_str(),(std::string("h_PhoR9")+cutString[ii]).c_str(),50,0.,1.);
-   h_PhoHoE[ii] = new TH1F((std::string("h_PhoHoE")+cutString[ii]).c_str(),(std::string("h_PhoHoE")+cutString[ii]).c_str(),50,0.,0.05);
-   h_PhoSieie[ii] = new TH1F((std::string("h_PhoSieie")+cutString[ii]).c_str(),(std::string("h_PhoSieie")+cutString[ii]).c_str(),50,0.,0.07);
-   h_DiPhoPt[ii] = new TH1F((std::string("h_DiPhoPt")+cutString[ii]).c_str(),(std::string("h_DiPhoPt")+cutString[ii]).c_str(),120,0.,600.);
    h_DiPhoPt_SB[ii] = new TH1F((std::string("h_DiPhoPt_SB")+cutString[ii]).c_str(),(std::string("h_DiPhoPt_SB")+cutString[ii]).c_str(),120,0.,600.);  
    h_DiPhoPt_1btag_SB[ii] = new TH1F((std::string("h_DiPhoPt_1btag_SB")+cutString[ii]).c_str(),(std::string("h_DiPhoPt_1btag_SB")+cutString[ii]).c_str(),120,0.,600.);
    h_DiPhoPt_2btag_SB[ii] = new TH1F((std::string("h_DiPhoPt_2btag_SB")+cutString[ii]).c_str(),(std::string("h_DiPhoPt_2btag_SB")+cutString[ii]).c_str(),120,0.,600.);
-   h_DiPhoEta[ii] = new TH1F((std::string("h_DiPhoEta")+cutString[ii]).c_str(),(std::string("h_DiPhoEta")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_DiPhoPhi[ii] = new TH1F((std::string("h_DiPhoPhi")+cutString[ii]).c_str(),(std::string("h_DiPhoPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_DiPhoDeltaR[ii] = new TH1F((std::string("h_DiPhoDeltaR")+cutString[ii]).c_str(),(std::string("h_DiPhoDeltaR")+cutString[ii]).c_str(),60,0.,6.);
-   h_DiPhoInvMass[ii] = new TH1F((std::string("h_DiPhoInvMass")+cutString[ii]).c_str(),(std::string("h_DiPhoInvMass")+cutString[ii]).c_str(),50,100.,180.);
-   h_DiPhoCosthetastar[ii] = new TH1F((std::string("h_DiPhoCosthetastar")+cutString[ii]).c_str(),(std::string("h_DiPhoCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5);
-   h_jetPt[ii] = new TH1F((std::string("h_jetPt")+cutString[ii]).c_str(),(std::string("h_jetPt")+cutString[ii]).c_str(),100,0.,500.);
-   h_jetEta[ii] = new TH1F((std::string("h_jetEta")+cutString[ii]).c_str(),(std::string("h_jetEta")+cutString[ii]).c_str(),80,-4,4);
-   h_jetPhi[ii] = new TH1F((std::string("h_jetPhi")+cutString[ii]).c_str(),(std::string("h_jetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_jetcsvBtag[ii] = new TH1F((std::string("h_jetcsvBtag")+cutString[ii]).c_str(),(std::string("h_jetcsvBtag")+cutString[ii]).c_str(),100,0.,1.);
-   h_jetbetaStarClassic[ii] = new TH1F((std::string("h_jetbetaStarClassic")+cutString[ii]).c_str(),(std::string("h_jetbetaStarClassic")+cutString[ii]).c_str(),100,0.,1.);
-   h_jetdR2Mean[ii] = new TH1F((std::string("h_jetdR2Mean")+cutString[ii]).c_str(),(std::string("h_jetdR2Mean")+cutString[ii]).c_str(),100,0.,0.1);
-   h_DijetPt[ii] = new TH1F((std::string("h_DijetPt")+cutString[ii]).c_str(),(std::string("h_DijetPt")+cutString[ii]).c_str(),120,0.,600.);
-   h_DijetEta[ii] = new TH1F((std::string("h_DijetEta")+cutString[ii]).c_str(),(std::string("h_DijetEta")+cutString[ii]).c_str(),80,-4,4);
-   h_DijetPhi[ii] = new TH1F((std::string("h_DijetPhi")+cutString[ii]).c_str(),(std::string("h_DijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_DijetDeltaR[ii] = new TH1F((std::string("h_DijetDeltaR")+cutString[ii]).c_str(),(std::string("h_DijetDeltaR")+cutString[ii]).c_str(),70,0.,7.);
-   h_DijetInvMass[ii] = new TH1F((std::string("h_DijetInvMass")+cutString[ii]).c_str(),(std::string("h_DijetInvMass")+cutString[ii]).c_str(),60,0.,300.);
-   h_DijetCosthetastar[ii] = new TH1F((std::string("h_DijetCosthetastar")+cutString[ii]).c_str(),(std::string("h_DijetCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5);
-   h_minPhojetDeltaR[ii] = new TH1F((std::string("h_minPhojetDeltaR")+cutString[ii]).c_str(),(std::string("h_minPhojetDeltaR")+cutString[ii]).c_str(),80,0.,4.);
-   h_DiPhoDijetDeltaR[ii] = new TH1F((std::string("h_DiPhoDijetDeltaR")+cutString[ii]).c_str(),(std::string("h_DiPhoDijetDeltaR")+cutString[ii]).c_str(),90,0.,9.);
-   h_DiPhoDijetPt[ii] = new TH1F((std::string("h_DiPhoDijetPt")+cutString[ii]).c_str(),(std::string("h_DiPhoDijetPt")+cutString[ii]).c_str(),120,0.,600.);
-   h_DiPhoDijetEta[ii] = new TH1F((std::string("h_DiPhoDijetEta")+cutString[ii]).c_str(),(std::string("h_DiPhoDijetEta")+cutString[ii]).c_str(),100,-5,5);
-   h_DiPhoDijetPhi[ii] = new TH1F((std::string("h_DiPhoDijetPhi")+cutString[ii]).c_str(),(std::string("h_DiPhoDijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_DiPhoDijetInvMass[ii] = new TH1F((std::string("h_DiPhoDijetInvMass")+cutString[ii]).c_str(),(std::string("h_DiPhoDijetInvMass")+cutString[ii]).c_str(),200,0.,1200.); 
-   h2_Pho1Pt_vs_jet1Pt[ii] = new TH2F((std::string("h2_Pho1Pt_vs_jet1Pt")+cutString[ii]).c_str(),(std::string("h2_Pho1Pt_vs_jet1Pt")+cutString[ii]).c_str(),100,0.,500.,100,0.,500.);
-   h2_Pho2Pt_vs_jet2Pt[ii] = new TH2F((std::string("h2_Pho2Pt_vs_jet2Pt")+cutString[ii]).c_str(),(std::string("h2_Pho2Pt_vs_jet2Pt")+cutString[ii]).c_str(),100,0.,500.,100,0.,500.);
-   h2_Pho1Eta_vs_jet1Eta[ii] = new TH2F((std::string("h2_Pho1Eta_vs_jet1Eta")+cutString[ii]).c_str(),(std::string("h2_Pho1Eta_vs_jet1Eta")+cutString[ii]).c_str(),80,-4,4,80,-4,4);
-   h2_Pho2Eta_vs_jet2Eta[ii] = new TH2F((std::string("h2_Pho2Eta_vs_jet2Eta")+cutString[ii]).c_str(),(std::string("h2_Pho2Eta_vs_jet2Eta")+cutString[ii]).c_str(),80,-4,4,80,-4,4);
-   h2_Pho1Phi_vs_jet1Phi[ii] = new TH2F((std::string("h2_Pho1Phi_vs_jet1Phi")+cutString[ii]).c_str(),(std::string("h2_Pho1Phi_vs_jet1Phi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_Pho2Phi_vs_jet2Phi[ii] = new TH2F((std::string("h2_Pho2Phi_vs_jet2Phi")+cutString[ii]).c_str(),(std::string("h2_Pho2Phi_vs_jet2Phi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_DiPhoInvMass_vs_DijetInvMass[ii] = new TH2F((std::string("h2_DiPhoInvMass_vs_DijetInvMass")+cutString[ii]).c_str(),(std::string("h2_DiPhoInvMass_vs_DijetInvMass")+cutString[ii]).c_str(),50,100.,180.,60,0.,300.);
-   h2_DiPhoPt_vs_DijetPt[ii] = new TH2F((std::string("h2_DiPhoPt_vs_DijetPt")+cutString[ii]).c_str(),(std::string("h2_DiPhoPt_vs_DijetPt")+cutString[ii]).c_str(),120,0.,600.,120,0.,600.);
-   h2_DiPhoEta_vs_DijetEta[ii] = new TH2F((std::string("h2_DiPhoEta_vs_DijetEta")+cutString[ii]).c_str(),(std::string("h2_DiPhoEta_vs_DijetEta")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_DiPhoPhi_vs_DijetPhi[ii] = new TH2F((std::string("h2_DiPhoPhi_vs_DijetPhi")+cutString[ii]).c_str(),(std::string("h2_DiPhoPhi_vs_DijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_DiPhoDeltaR_vs_DijetDeltaR[ii] = new TH2F((std::string("h2_DiPhoDeltaR_vs_DijetDeltaR")+cutString[ii]).c_str(),(std::string("h2_DiPhoDeltaR_vs_DijetDeltaR")+cutString[ii]).c_str(),60,0.,6.,60,0.,6.);
-   h2_DiPhoCosthetastar_vs_DijetCosthetastar[ii] = new TH2F((std::string("h2_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[ii]).c_str(),(std::string("h2_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5,60,-1.5,1.5);
   }
+ 
+ for(unsigned int ii = 0; ii < 3; ii++){
+  for(unsigned int jj = 0; jj < cutString.size(); jj++){
+   h_PhoPt[ii][jj] = new TH1F((std::string("h_PhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
+   h_PhoEta[ii][jj] = new TH1F((std::string("h_PhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_PhoPhi[ii][jj] = new TH1F((std::string("h_PhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_PhoR9[ii][jj] = new TH1F((std::string("h_PhoR9")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoR9")+cutString[jj]+catString[ii]).c_str(),50,0.,1.);
+   h_PhoHoE[ii][jj] = new TH1F((std::string("h_PhoHoE")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoHoE")+cutString[jj]+catString[ii]).c_str(),50,0.,0.05);
+   h_PhoSieie[ii][jj] = new TH1F((std::string("h_PhoSieie")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoSieie")+cutString[jj]+catString[ii]).c_str(),50,0.,0.07);
+   h_DiPhoPt[ii][jj] = new TH1F((std::string("h_DiPhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_DiPhoEta[ii][jj] = new TH1F((std::string("h_DiPhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_DiPhoPhi[ii][jj] = new TH1F((std::string("h_DiPhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_DiPhoDeltaR[ii][jj] = new TH1F((std::string("h_DiPhoDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDeltaR")+cutString[jj]+catString[ii]).c_str(),60,0.,6.);
+   h_DiPhoInvMass[ii][jj] = new TH1F((std::string("h_DiPhoInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoInvMass")+cutString[jj]+catString[ii]).c_str(),50,100.,180.);
+   h_DiPhoCosthetastar[ii][jj] = new TH1F((std::string("h_DiPhoCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5);
+   h_jetPt[ii][jj] = new TH1F((std::string("h_jetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
+   h_jetEta[ii][jj] = new TH1F((std::string("h_jetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetEta")+cutString[jj]+catString[ii]).c_str(),80,-4,4);
+   h_jetPhi[ii][jj] = new TH1F((std::string("h_jetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_jetcsvBtag[ii][jj] = new TH1F((std::string("h_jetcsvBtag")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetcsvBtag")+cutString[jj]+catString[ii]).c_str(),100,0.,1.);
+   h_jetbetaStarClassic[ii][jj] = new TH1F((std::string("h_jetbetaStarClassic")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetbetaStarClassic")+cutString[jj]+catString[ii]).c_str(),100,0.,1.);
+   h_jetdR2Mean[ii][jj] = new TH1F((std::string("h_jetdR2Mean")+cutString[jj]+catString[ii]).c_str(),(std::string("h_jetdR2Mean")+cutString[jj]+catString[ii]).c_str(),100,0.,0.1);
+   h_DijetPt[ii][jj] = new TH1F((std::string("h_DijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_DijetEta[ii][jj] = new TH1F((std::string("h_DijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetEta")+cutString[jj]+catString[ii]).c_str(),80,-4,4);
+   h_DijetPhi[ii][jj] = new TH1F((std::string("h_DijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_DijetDeltaR[ii][jj] = new TH1F((std::string("h_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),70,0.,7.);
+   h_DijetInvMass[ii][jj] = new TH1F((std::string("h_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),60,0.,300.);
+   h_DijetCosthetastar[ii][jj] = new TH1F((std::string("h_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5);
+   h_minPhojetDeltaR[ii][jj] = new TH1F((std::string("h_minPhojetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_minPhojetDeltaR")+cutString[jj]+catString[ii]).c_str(),80,0.,4.);
+   h_DiPhoDijetDeltaR[ii][jj] = new TH1F((std::string("h_DiPhoDijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDijetDeltaR")+cutString[jj]+catString[ii]).c_str(),90,0.,9.);
+   h_DiPhoDijetPt[ii][jj] = new TH1F((std::string("h_DiPhoDijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_DiPhoDijetEta[ii][jj] = new TH1F((std::string("h_DiPhoDijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDijetEta")+cutString[jj]+catString[ii]).c_str(),100,-5,5);
+   h_DiPhoDijetPhi[ii][jj] = new TH1F((std::string("h_DiPhoDijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_DiPhoDijetInvMass[ii][jj] = new TH1F((std::string("h_DiPhoDijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_DiPhoDijetInvMass")+cutString[jj]+catString[ii]).c_str(),200,0.,1200.); 
+   h2_Pho1Pt_vs_jet1Pt[ii][jj] = new TH2F((std::string("h2_Pho1Pt_vs_jet1Pt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho1Pt_vs_jet1Pt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.,100,0.,500.);
+   h2_Pho2Pt_vs_jet2Pt[ii][jj] = new TH2F((std::string("h2_Pho2Pt_vs_jet2Pt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho2Pt_vs_jet2Pt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.,100,0.,500.);
+   h2_Pho1Eta_vs_jet1Eta[ii][jj] = new TH2F((std::string("h2_Pho1Eta_vs_jet1Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho1Eta_vs_jet1Eta")+cutString[jj]+catString[ii]).c_str(),80,-4,4,80,-4,4);
+   h2_Pho2Eta_vs_jet2Eta[ii][jj] = new TH2F((std::string("h2_Pho2Eta_vs_jet2Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho2Eta_vs_jet2Eta")+cutString[jj]+catString[ii]).c_str(),80,-4,4,80,-4,4);
+   h2_Pho1Phi_vs_jet1Phi[ii][jj] = new TH2F((std::string("h2_Pho1Phi_vs_jet1Phi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho1Phi_vs_jet1Phi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_Pho2Phi_vs_jet2Phi[ii][jj] = new TH2F((std::string("h2_Pho2Phi_vs_jet2Phi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_Pho2Phi_vs_jet2Phi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_DiPhoInvMass_vs_DijetInvMass[ii][jj] = new TH2F((std::string("h2_DiPhoInvMass_vs_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoInvMass_vs_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),50,100.,180.,60,0.,300.);
+   h2_DiPhoPt_vs_DijetPt[ii][jj] = new TH2F((std::string("h2_DiPhoPt_vs_DijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoPt_vs_DijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.,120,0.,600.);
+   h2_DiPhoEta_vs_DijetEta[ii][jj] = new TH2F((std::string("h2_DiPhoEta_vs_DijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoEta_vs_DijetEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_DiPhoPhi_vs_DijetPhi[ii][jj] = new TH2F((std::string("h2_DiPhoPhi_vs_DijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoPhi_vs_DijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_DiPhoDeltaR_vs_DijetDeltaR[ii][jj] = new TH2F((std::string("h2_DiPhoDeltaR_vs_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoDeltaR_vs_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),60,0.,6.,60,0.,6.);
+   h2_DiPhoCosthetastar_vs_DijetCosthetastar[ii][jj] = new TH2F((std::string("h2_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5,60,-1.5,1.5);
+  }
+ }
   
   std::map<int,TH1F*> h_ref_NEvents;
   std::map<int,TH1F*> h_ref_NEvents_1btag;
@@ -530,105 +542,111 @@ int main(int argc, char** argv)
   std::map<int,TH1F*> h_ref_NEvents_SB;
   std::map<int,TH1F*> h_ref_NEvents_1btag_SB;
   std::map<int,TH1F*> h_ref_NEvents_2btag_SB;
-  std::map<int,TH1F*> h_ref_PhoPt; 
-  std::map<int,TH1F*> h_ref_PhoEta;
-  std::map<int,TH1F*> h_ref_PhoPhi; 
-  std::map<int,TH1F*> h_ref_PhoR9; 
-  std::map<int,TH1F*> h_ref_PhoHoE; 
-  std::map<int,TH1F*> h_ref_PhoSieie; 
-  std::map<int,TH1F*> h_ref_DiPhoPt;
+
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoPt; 
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoPhi; 
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoR9; 
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoHoE; 
+  std::map<int,std::map<int,TH1F*> > h_ref_PhoSieie; 
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoPt;
   std::map<int,TH1F*> h_ref_DiPhoPt_SB;
   std::map<int,TH1F*> h_ref_DiPhoPt_1btag_SB;
   std::map<int,TH1F*> h_ref_DiPhoPt_2btag_SB;
-  std::map<int,TH1F*> h_ref_DiPhoEta;
-  std::map<int,TH1F*> h_ref_DiPhoPhi;
-  std::map<int,TH1F*> h_ref_DiPhoDeltaR;
-  std::map<int,TH1F*> h_ref_DiPhoInvMass;
-  std::map<int,TH1F*> h_ref_DiPhoCosthetastar;
-  std::map<int,TH1F*> h_ref_jetPt;
-  std::map<int,TH1F*> h_ref_jetEta;
-  std::map<int,TH1F*> h_ref_jetPhi;
-  std::map<int,TH1F*> h_ref_jetcsvBtag;
-  std::map<int,TH1F*> h_ref_jetbetaStarClassic;
-  std::map<int,TH1F*> h_ref_jetdR2Mean;
-  std::map<int,TH1F*> h_ref_DijetPt;
-  std::map<int,TH1F*> h_ref_DijetEta;
-  std::map<int,TH1F*> h_ref_DijetPhi;
-  std::map<int,TH1F*> h_ref_DijetDeltaR;
-  std::map<int,TH1F*> h_ref_DijetInvMass;
-  std::map<int,TH1F*> h_ref_DijetCosthetastar;
-  std::map<int,TH1F*> h_ref_minPhojetDeltaR;
-  std::map<int,TH1F*> h_ref_DiPhoDijetDeltaR;
-  std::map<int,TH1F*> h_ref_DiPhoDijetPt;
-  std::map<int,TH1F*> h_ref_DiPhoDijetEta;
-  std::map<int,TH1F*> h_ref_DiPhoDijetPhi;
-  std::map<int,TH1F*> h_ref_DiPhoDijetInvMass;
-  std::map<int,TH2F*> h2_ref_Pho1Pt_vs_jet1Pt;
-  std::map<int,TH2F*> h2_ref_Pho2Pt_vs_jet2Pt;
-  std::map<int,TH2F*> h2_ref_Pho1Eta_vs_jet1Eta;
-  std::map<int,TH2F*> h2_ref_Pho2Eta_vs_jet2Eta;
-  std::map<int,TH2F*> h2_ref_Pho1Phi_vs_jet1Phi;
-  std::map<int,TH2F*> h2_ref_Pho2Phi_vs_jet2Phi;
-  std::map<int,TH2F*> h2_ref_DiPhoInvMass_vs_DijetInvMass;
-  std::map<int,TH2F*> h2_ref_DiPhoPt_vs_DijetPt;
-  std::map<int,TH2F*> h2_ref_DiPhoEta_vs_DijetEta;
-  std::map<int,TH2F*> h2_ref_DiPhoPhi_vs_DijetPhi;
-  std::map<int,TH2F*> h2_ref_DiPhoDeltaR_vs_DijetDeltaR;
-  std::map<int,TH2F*> h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoPhi;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoInvMass;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetPt;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetPhi;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetcsvBtag;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetbetaStarClassic;
+  std::map<int,std::map<int,TH1F*> > h_ref_jetdR2Mean;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetPt;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetPhi;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetInvMass;
+  std::map<int,std::map<int,TH1F*> > h_ref_DijetCosthetastar;
+  std::map<int,std::map<int,TH1F*> > h_ref_minPhojetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDijetDeltaR;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDijetPt;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDijetEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDijetPhi;
+  std::map<int,std::map<int,TH1F*> > h_ref_DiPhoDijetInvMass;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho1Pt_vs_jet1Pt;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho2Pt_vs_jet2Pt;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho1Eta_vs_jet1Eta;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho2Eta_vs_jet2Eta;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho1Phi_vs_jet1Phi;
+  std::map<int,std::map<int,TH2F*> > h2_ref_Pho2Phi_vs_jet2Phi;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoInvMass_vs_DijetInvMass;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoPt_vs_DijetPt;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoEta_vs_DijetEta;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoPhi_vs_DijetPhi;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoDeltaR_vs_DijetDeltaR;
+  std::map<int,std::map<int,TH2F*> > h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar;
 
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
    h_ref_NEvents[ii] = new TH1F((std::string("h_ref_NEvents")+cutString[ii]).c_str(),(std::string("h_ref_NEvents")+cutString[ii]).c_str(),100000000,0,100000000);
    h_ref_NEvents_1btag[ii] = new TH1F((std::string("h_ref_NEvents_1btag")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_1btag")+cutString[ii]).c_str(),100000000,0,100000000);
    h_ref_NEvents_2btag[ii] = new TH1F((std::string("h_ref_NEvents_2btag")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_2btag")+cutString[ii]).c_str(),100000000,0,100000000);
    h_ref_NEvents_SB[ii] = new TH1F((std::string("h_ref_NEvents_SB")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_SB")+cutString[ii]).c_str(),100000000,0,100000000);
-   h_ref_NEvents_1btag_SB[ii] = new TH1F((std::string("h_ref_NEvents_1btag_SB")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_1btag_SB")+cutString[ii]).c_str(),100000000,0,100000000);
+   h_ref_NEvents_1btag_SB[ii] = new TH1F((std::string("h_ref_NEvents_1btag_SB")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_1btag")+cutString[ii]).c_str(),100000000,0,100000000);
    h_ref_NEvents_2btag_SB[ii] = new TH1F((std::string("h_ref_NEvents_2btag_SB")+cutString[ii]).c_str(),(std::string("h_ref_NEvents_2btag_SB")+cutString[ii]).c_str(),100000000,0,100000000);
-   h_ref_PhoPt[ii] = new TH1F((std::string("h_ref_PhoPt")+cutString[ii]).c_str(),(std::string("h_ref_PhoPt")+cutString[ii]).c_str(),100,0.,500.);
-   h_ref_PhoEta[ii] = new TH1F((std::string("h_ref_PhoEta")+cutString[ii]).c_str(),(std::string("h_ref_PhoEta")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_PhoPhi[ii] = new TH1F((std::string("h_ref_PhoPhi")+cutString[ii]).c_str(),(std::string("h_ref_PhoPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_PhoR9[ii] = new TH1F((std::string("h_ref_PhoR9")+cutString[ii]).c_str(),(std::string("h_ref_PhoR9")+cutString[ii]).c_str(),50,0.,1.);
-   h_ref_PhoHoE[ii] = new TH1F((std::string("h_ref_PhoHoE")+cutString[ii]).c_str(),(std::string("h_ref_PhoHoE")+cutString[ii]).c_str(),50,0.,0.05);
-   h_ref_PhoSieie[ii] = new TH1F((std::string("h_ref_PhoSieie")+cutString[ii]).c_str(),(std::string("h_ref_PhoSieie")+cutString[ii]).c_str(),50,0.,0.07);
-   h_ref_DiPhoPt[ii] = new TH1F((std::string("h_ref_DiPhoPt")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoPt")+cutString[ii]).c_str(),120,0.,600.);
    h_ref_DiPhoPt_SB[ii] = new TH1F((std::string("h_ref_DiPhoPt_SB")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoPt_SB")+cutString[ii]).c_str(),120,0.,600.);  
    h_ref_DiPhoPt_1btag_SB[ii] = new TH1F((std::string("h_ref_DiPhoPt_1btag_SB")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoPt_1btag_SB")+cutString[ii]).c_str(),120,0.,600.);
    h_ref_DiPhoPt_2btag_SB[ii] = new TH1F((std::string("h_ref_DiPhoPt_2btag_SB")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoPt_2btag_SB")+cutString[ii]).c_str(),120,0.,600.);
-   h_ref_DiPhoEta[ii] = new TH1F((std::string("h_ref_DiPhoEta")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoEta")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_DiPhoPhi[ii] = new TH1F((std::string("h_ref_DiPhoPhi")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_DiPhoDeltaR[ii] = new TH1F((std::string("h_ref_DiPhoDeltaR")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDeltaR")+cutString[ii]).c_str(),60,0.,6.);
-   h_ref_DiPhoInvMass[ii] = new TH1F((std::string("h_ref_DiPhoInvMass")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoInvMass")+cutString[ii]).c_str(),50,100.,180.);
-   h_ref_DiPhoCosthetastar[ii] = new TH1F((std::string("h_ref_DiPhoCosthetastar")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5);
-   h_ref_jetPt[ii] = new TH1F((std::string("h_ref_jetPt")+cutString[ii]).c_str(),(std::string("h_ref_jetPt")+cutString[ii]).c_str(),100,0.,500.);
-   h_ref_jetEta[ii] = new TH1F((std::string("h_ref_jetEta")+cutString[ii]).c_str(),(std::string("h_ref_jetEta")+cutString[ii]).c_str(),80,-4,4);
-   h_ref_jetPhi[ii] = new TH1F((std::string("h_ref_jetPhi")+cutString[ii]).c_str(),(std::string("h_ref_jetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_jetcsvBtag[ii] = new TH1F((std::string("h_ref_jetcsvBtag")+cutString[ii]).c_str(),(std::string("h_ref_jetcsvBtag")+cutString[ii]).c_str(),100,0.,1.);
-   h_ref_jetbetaStarClassic[ii] = new TH1F((std::string("h_ref_jetbetaStarClassic")+cutString[ii]).c_str(),(std::string("h_ref_jetbetaStarClassic")+cutString[ii]).c_str(),100,0.,1.);
-   h_ref_jetdR2Mean[ii] = new TH1F((std::string("h_ref_jetdR2Mean")+cutString[ii]).c_str(),(std::string("h_ref_jetdR2Mean")+cutString[ii]).c_str(),100,0.,0.1);
-   h_ref_DijetPt[ii] = new TH1F((std::string("h_ref_DijetPt")+cutString[ii]).c_str(),(std::string("h_ref_DijetPt")+cutString[ii]).c_str(),120,0.,600.);
-   h_ref_DijetEta[ii] = new TH1F((std::string("h_ref_DijetEta")+cutString[ii]).c_str(),(std::string("h_ref_DijetEta")+cutString[ii]).c_str(),80,-4,4);
-   h_ref_DijetPhi[ii] = new TH1F((std::string("h_ref_DijetPhi")+cutString[ii]).c_str(),(std::string("h_ref_DijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_DijetDeltaR[ii] = new TH1F((std::string("h_ref_DijetDeltaR")+cutString[ii]).c_str(),(std::string("h_ref_DijetDeltaR")+cutString[ii]).c_str(),70,0.,7.);
-   h_ref_DijetInvMass[ii] = new TH1F((std::string("h_ref_DijetInvMass")+cutString[ii]).c_str(),(std::string("h_ref_DijetInvMass")+cutString[ii]).c_str(),60,0.,300.);
-   h_ref_DijetCosthetastar[ii] = new TH1F((std::string("h_ref_DijetCosthetastar")+cutString[ii]).c_str(),(std::string("h_ref_DijetCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5);
-   h_ref_minPhojetDeltaR[ii] = new TH1F((std::string("h_ref_minPhojetDeltaR")+cutString[ii]).c_str(),(std::string("h_ref_minPhojetDeltaR")+cutString[ii]).c_str(),80,0.,4.);
-   h_ref_DiPhoDijetDeltaR[ii] = new TH1F((std::string("h_ref_DiPhoDijetDeltaR")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDijetDeltaR")+cutString[ii]).c_str(),90,0.,9.);
-   h_ref_DiPhoDijetPt[ii] = new TH1F((std::string("h_ref_DiPhoDijetPt")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDijetPt")+cutString[ii]).c_str(),120,0.,600.);
-   h_ref_DiPhoDijetEta[ii] = new TH1F((std::string("h_ref_DiPhoDijetEta")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDijetEta")+cutString[ii]).c_str(),100,-5,5);
-   h_ref_DiPhoDijetPhi[ii] = new TH1F((std::string("h_ref_DiPhoDijetPhi")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5);
-   h_ref_DiPhoDijetInvMass[ii] = new TH1F((std::string("h_ref_DiPhoDijetInvMass")+cutString[ii]).c_str(),(std::string("h_ref_DiPhoDijetInvMass")+cutString[ii]).c_str(),200,0.,1200.); 
-   h2_ref_Pho1Pt_vs_jet1Pt[ii] = new TH2F((std::string("h2_ref_Pho1Pt_vs_jet1Pt")+cutString[ii]).c_str(),(std::string("h2_ref_Pho1Pt_vs_jet1Pt")+cutString[ii]).c_str(),100,0.,500.,100,0.,500.);
-   h2_ref_Pho2Pt_vs_jet2Pt[ii] = new TH2F((std::string("h2_ref_Pho2Pt_vs_jet2Pt")+cutString[ii]).c_str(),(std::string("h2_ref_Pho2Pt_vs_jet2Pt")+cutString[ii]).c_str(),100,0.,500.,100,0.,500.);
-   h2_ref_Pho1Eta_vs_jet1Eta[ii] = new TH2F((std::string("h2_ref_Pho1Eta_vs_jet1Eta")+cutString[ii]).c_str(),(std::string("h2_ref_Pho1Eta_vs_jet1Eta")+cutString[ii]).c_str(),80,-4,4,80,-4,4);
-   h2_ref_Pho2Eta_vs_jet2Eta[ii] = new TH2F((std::string("h2_ref_Pho2Eta_vs_jet2Eta")+cutString[ii]).c_str(),(std::string("h2_ref_Pho2Eta_vs_jet2Eta")+cutString[ii]).c_str(),80,-4,4,80,-4,4);
-   h2_ref_Pho1Phi_vs_jet1Phi[ii] = new TH2F((std::string("h2_ref_Pho1Phi_vs_jet1Phi")+cutString[ii]).c_str(),(std::string("h2_ref_Pho1Phi_vs_jet1Phi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_ref_Pho2Phi_vs_jet2Phi[ii] = new TH2F((std::string("h2_ref_Pho2Phi_vs_jet2Phi")+cutString[ii]).c_str(),(std::string("h2_ref_Pho2Phi_vs_jet2Phi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_ref_DiPhoInvMass_vs_DijetInvMass[ii] = new TH2F((std::string("h2_ref_DiPhoInvMass_vs_DijetInvMass")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoInvMass_vs_DijetInvMass")+cutString[ii]).c_str(),50,100.,180.,60,0.,300.);
-   h2_ref_DiPhoPt_vs_DijetPt[ii] = new TH2F((std::string("h2_ref_DiPhoPt_vs_DijetPt")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoPt_vs_DijetPt")+cutString[ii]).c_str(),120,0.,600.,120,0.,600.);
-   h2_ref_DiPhoEta_vs_DijetEta[ii] = new TH2F((std::string("h2_ref_DiPhoEta_vs_DijetEta")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoEta_vs_DijetEta")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_ref_DiPhoPhi_vs_DijetPhi[ii] = new TH2F((std::string("h2_ref_DiPhoPhi_vs_DijetPhi")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoPhi_vs_DijetPhi")+cutString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
-   h2_ref_DiPhoDeltaR_vs_DijetDeltaR[ii] = new TH2F((std::string("h2_ref_DiPhoDeltaR_vs_DijetDeltaR")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoDeltaR_vs_DijetDeltaR")+cutString[ii]).c_str(),60,0.,6.,60,0.,6.);
-   h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[ii] = new TH2F((std::string("h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[ii]).c_str(),(std::string("h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[ii]).c_str(),60,-1.5,1.5,60,-1.5,1.5);
   }
+ 
+ for(unsigned int ii = 0; ii < 3; ii++){
+  for(unsigned int jj = 0; jj < cutString.size(); jj++){
+   h_ref_PhoPt[ii][jj] = new TH1F((std::string("h_ref_PhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
+   h_ref_PhoEta[ii][jj] = new TH1F((std::string("h_ref_PhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_PhoPhi[ii][jj] = new TH1F((std::string("h_ref_PhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_PhoR9[ii][jj] = new TH1F((std::string("h_ref_PhoR9")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoR9")+cutString[jj]+catString[ii]).c_str(),50,0.,1.);
+   h_ref_PhoHoE[ii][jj] = new TH1F((std::string("h_ref_PhoHoE")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoHoE")+cutString[jj]+catString[ii]).c_str(),50,0.,0.05);
+   h_ref_PhoSieie[ii][jj] = new TH1F((std::string("h_ref_PhoSieie")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoSieie")+cutString[jj]+catString[ii]).c_str(),50,0.,0.07);
+   h_ref_DiPhoPt[ii][jj] = new TH1F((std::string("h_ref_DiPhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_ref_DiPhoEta[ii][jj] = new TH1F((std::string("h_ref_DiPhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_DiPhoPhi[ii][jj] = new TH1F((std::string("h_ref_DiPhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_DiPhoDeltaR[ii][jj] = new TH1F((std::string("h_ref_DiPhoDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDeltaR")+cutString[jj]+catString[ii]).c_str(),60,0.,6.);
+   h_ref_DiPhoInvMass[ii][jj] = new TH1F((std::string("h_ref_DiPhoInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoInvMass")+cutString[jj]+catString[ii]).c_str(),50,100.,180.);
+   h_ref_DiPhoCosthetastar[ii][jj] = new TH1F((std::string("h_ref_DiPhoCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5);
+   h_ref_jetPt[ii][jj] = new TH1F((std::string("h_ref_jetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
+   h_ref_jetEta[ii][jj] = new TH1F((std::string("h_ref_jetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetEta")+cutString[jj]+catString[ii]).c_str(),80,-4,4);
+   h_ref_jetPhi[ii][jj] = new TH1F((std::string("h_ref_jetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_jetcsvBtag[ii][jj] = new TH1F((std::string("h_ref_jetcsvBtag")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetcsvBtag")+cutString[jj]+catString[ii]).c_str(),100,0.,1.);
+   h_ref_jetbetaStarClassic[ii][jj] = new TH1F((std::string("h_ref_jetbetaStarClassic")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetbetaStarClassic")+cutString[jj]+catString[ii]).c_str(),100,0.,1.);
+   h_ref_jetdR2Mean[ii][jj] = new TH1F((std::string("h_ref_jetdR2Mean")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_jetdR2Mean")+cutString[jj]+catString[ii]).c_str(),100,0.,0.1);
+   h_ref_DijetPt[ii][jj] = new TH1F((std::string("h_ref_DijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_ref_DijetEta[ii][jj] = new TH1F((std::string("h_ref_DijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetEta")+cutString[jj]+catString[ii]).c_str(),80,-4,4);
+   h_ref_DijetPhi[ii][jj] = new TH1F((std::string("h_ref_DijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_DijetDeltaR[ii][jj] = new TH1F((std::string("h_ref_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),70,0.,7.);
+   h_ref_DijetInvMass[ii][jj] = new TH1F((std::string("h_ref_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),60,0.,300.);
+   h_ref_DijetCosthetastar[ii][jj] = new TH1F((std::string("h_ref_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5);
+   h_ref_minPhojetDeltaR[ii][jj] = new TH1F((std::string("h_ref_minPhojetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_minPhojetDeltaR")+cutString[jj]+catString[ii]).c_str(),80,0.,4.);
+   h_ref_DiPhoDijetDeltaR[ii][jj] = new TH1F((std::string("h_ref_DiPhoDijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDijetDeltaR")+cutString[jj]+catString[ii]).c_str(),90,0.,9.);
+   h_ref_DiPhoDijetPt[ii][jj] = new TH1F((std::string("h_ref_DiPhoDijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.);
+   h_ref_DiPhoDijetEta[ii][jj] = new TH1F((std::string("h_ref_DiPhoDijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDijetEta")+cutString[jj]+catString[ii]).c_str(),100,-5,5);
+   h_ref_DiPhoDijetPhi[ii][jj] = new TH1F((std::string("h_ref_DiPhoDijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_DiPhoDijetInvMass[ii][jj] = new TH1F((std::string("h_ref_DiPhoDijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_DiPhoDijetInvMass")+cutString[jj]+catString[ii]).c_str(),200,0.,1200.); 
+   h2_ref_Pho1Pt_vs_jet1Pt[ii][jj] = new TH2F((std::string("h2_ref_Pho1Pt_vs_jet1Pt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho1Pt_vs_jet1Pt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.,100,0.,500.);
+   h2_ref_Pho2Pt_vs_jet2Pt[ii][jj] = new TH2F((std::string("h2_ref_Pho2Pt_vs_jet2Pt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho2Pt_vs_jet2Pt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.,100,0.,500.);
+   h2_ref_Pho1Eta_vs_jet1Eta[ii][jj] = new TH2F((std::string("h2_ref_Pho1Eta_vs_jet1Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho1Eta_vs_jet1Eta")+cutString[jj]+catString[ii]).c_str(),80,-4,4,80,-4,4);
+   h2_ref_Pho2Eta_vs_jet2Eta[ii][jj] = new TH2F((std::string("h2_ref_Pho2Eta_vs_jet2Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho2Eta_vs_jet2Eta")+cutString[jj]+catString[ii]).c_str(),80,-4,4,80,-4,4);
+   h2_ref_Pho1Phi_vs_jet1Phi[ii][jj] = new TH2F((std::string("h2_ref_Pho1Phi_vs_jet1Phi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho1Phi_vs_jet1Phi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_ref_Pho2Phi_vs_jet2Phi[ii][jj] = new TH2F((std::string("h2_ref_Pho2Phi_vs_jet2Phi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_Pho2Phi_vs_jet2Phi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_ref_DiPhoInvMass_vs_DijetInvMass[ii][jj] = new TH2F((std::string("h2_ref_DiPhoInvMass_vs_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoInvMass_vs_DijetInvMass")+cutString[jj]+catString[ii]).c_str(),50,100.,180.,60,0.,300.);
+   h2_ref_DiPhoPt_vs_DijetPt[ii][jj] = new TH2F((std::string("h2_ref_DiPhoPt_vs_DijetPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoPt_vs_DijetPt")+cutString[jj]+catString[ii]).c_str(),120,0.,600.,120,0.,600.);
+   h2_ref_DiPhoEta_vs_DijetEta[ii][jj] = new TH2F((std::string("h2_ref_DiPhoEta_vs_DijetEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoEta_vs_DijetEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_ref_DiPhoPhi_vs_DijetPhi[ii][jj] = new TH2F((std::string("h2_ref_DiPhoPhi_vs_DijetPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoPhi_vs_DijetPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5,70,-3.5,3.5);
+   h2_ref_DiPhoDeltaR_vs_DijetDeltaR[ii][jj] = new TH2F((std::string("h2_ref_DiPhoDeltaR_vs_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoDeltaR_vs_DijetDeltaR")+cutString[jj]+catString[ii]).c_str(),60,0.,6.,60,0.,6.);
+   h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[ii][jj] = new TH2F((std::string("h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),(std::string("h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar")+cutString[jj]+catString[ii]).c_str(),60,-1.5,1.5,60,-1.5,1.5);
+  }
+ }
   
   std::map<int,TH1F*> h_data_NEvents_SB;
   std::map<int,TH1F*> h_data_NEvents_1btag_SB;
@@ -744,57 +762,63 @@ int main(int argc, char** argv)
                  if(category == 2) h_NEvents_2btag_SB[ii]->Fill(ievent_2btag_SB[ii],evweight);
                  if(category == 2) h_DiPhoPt_2btag_SB[ii]->Fill(gg_pt,evweight);
               }
+              
+              for(int jj = 0; jj < 3; jj++){
+              
+               if(jj == 1 && category != 1) continue;
+               if(jj == 2 && category != 2) continue;
+               
+               h_PhoPt[jj][ii]->Fill(pho1_pt,evweight);       h_PhoPt[jj][ii]->Fill(pho2_pt,evweight);
+               h_PhoEta[jj][ii]->Fill(pho1_eta,evweight);     h_PhoEta[jj][ii]->Fill(pho2_eta,evweight);
+               h_PhoPhi[jj][ii]->Fill(pho1_phi,evweight);     h_PhoPhi[jj][ii]->Fill(pho2_phi,evweight);
+               h_PhoR9[jj][ii]->Fill(pho1_r9,evweight);       h_PhoR9[jj][ii]->Fill(pho2_r9,evweight);
+               h_PhoHoE[jj][ii]->Fill(pho1_hoe,evweight);     h_PhoHoE[jj][ii]->Fill(pho2_hoe,evweight);
+               h_PhoSieie[jj][ii]->Fill(pho1_sieie,evweight); h_PhoSieie[jj][ii]->Fill(pho2_sieie,evweight);
 
-              h_PhoPt[ii]->Fill(pho1_pt,evweight);       h_PhoPt[ii]->Fill(pho2_pt,evweight);
-              h_PhoEta[ii]->Fill(pho1_eta,evweight);     h_PhoEta[ii]->Fill(pho2_eta,evweight);
-              h_PhoPhi[ii]->Fill(pho1_phi,evweight);     h_PhoPhi[ii]->Fill(pho2_phi,evweight);
-              h_PhoR9[ii]->Fill(pho1_r9,evweight);       h_PhoR9[ii]->Fill(pho2_r9,evweight);
-              h_PhoHoE[ii]->Fill(pho1_hoe,evweight);     h_PhoHoE[ii]->Fill(pho2_hoe,evweight);
-              h_PhoSieie[ii]->Fill(pho1_sieie,evweight); h_PhoSieie[ii]->Fill(pho2_sieie,evweight);
-
-              h_DiPhoPt[ii]->Fill(gg_pt,evweight);
-              h_DiPhoEta[ii]->Fill(gg_eta,evweight);
-              h_DiPhoPhi[ii]->Fill(gg_phi,evweight);
-              h_DiPhoDeltaR[ii]->Fill(Pho1P4.DeltaR(Pho2P4),evweight);
-              h_DiPhoInvMass[ii]->Fill(gg_mass,evweight);
-              h_DiPhoCosthetastar[ii]->Fill(costhetastar,evweight);
+               h_DiPhoPt[jj][ii]->Fill(gg_pt,evweight);
+               h_DiPhoEta[jj][ii]->Fill(gg_eta,evweight);
+               h_DiPhoPhi[jj][ii]->Fill(gg_phi,evweight);
+               h_DiPhoDeltaR[jj][ii]->Fill(Pho1P4.DeltaR(Pho2P4),evweight);
+               h_DiPhoInvMass[jj][ii]->Fill(gg_mass,evweight);
+               h_DiPhoCosthetastar[jj][ii]->Fill(costhetastar,evweight);
       
-              h_jetPt[ii]->Fill(jet1_pt,evweight);                           h_jetPt[ii]->Fill(jet2_pt,evweight);
-              h_jetEta[ii]->Fill(jet1_eta,evweight);                         h_jetEta[ii]->Fill(jet2_eta,evweight);
-              h_jetPhi[ii]->Fill(jet1_phi,evweight);                         h_jetPhi[ii]->Fill(jet2_phi,evweight);
-              h_jetcsvBtag[ii]->Fill(jet1_csvBtag,evweight);                 h_jetcsvBtag[ii]->Fill(jet2_csvBtag,evweight);
-              h_jetbetaStarClassic[ii]->Fill(jet1_betaStarClassic,evweight); h_jetbetaStarClassic[ii]->Fill(jet2_betaStarClassic,evweight);
-              h_jetdR2Mean[ii]->Fill(jet1_dR2Mean,evweight);                 h_jetdR2Mean[ii]->Fill(jet2_dR2Mean,evweight);
+               h_jetPt[jj][ii]->Fill(jet1_pt,evweight);                           h_jetPt[jj][ii]->Fill(jet2_pt,evweight);
+               h_jetEta[jj][ii]->Fill(jet1_eta,evweight);                         h_jetEta[jj][ii]->Fill(jet2_eta,evweight);
+               h_jetPhi[jj][ii]->Fill(jet1_phi,evweight);                         h_jetPhi[jj][ii]->Fill(jet2_phi,evweight);
+               h_jetcsvBtag[jj][ii]->Fill(jet1_csvBtag,evweight);                 h_jetcsvBtag[jj][ii]->Fill(jet2_csvBtag,evweight);
+               h_jetbetaStarClassic[jj][ii]->Fill(jet1_betaStarClassic,evweight); h_jetbetaStarClassic[jj][ii]->Fill(jet2_betaStarClassic,evweight);
+               h_jetdR2Mean[jj][ii]->Fill(jet1_dR2Mean,evweight);                 h_jetdR2Mean[jj][ii]->Fill(jet2_dR2Mean,evweight);
           
-              h_DijetPt[ii]->Fill(jj_pt,evweight);
-              h_DijetEta[ii]->Fill(jj_eta,evweight);
-              h_DijetPhi[ii]->Fill(jj_phi,evweight);
-              h_DijetDeltaR[ii]->Fill(jj_DR,evweight);
-              h_DijetInvMass[ii]->Fill(DijetP4.M(),evweight);
-              h_DijetCosthetastar[ii]->Fill(Hjj_Rstar.CosTheta(),evweight);
+               h_DijetPt[jj][ii]->Fill(jj_pt,evweight);
+               h_DijetEta[jj][ii]->Fill(jj_eta,evweight);
+               h_DijetPhi[jj][ii]->Fill(jj_phi,evweight);
+               h_DijetDeltaR[jj][ii]->Fill(jj_DR,evweight);
+               h_DijetInvMass[jj][ii]->Fill(DijetP4.M(),evweight);
+               h_DijetCosthetastar[jj][ii]->Fill(Hjj_Rstar.CosTheta(),evweight);
 
-              h_minPhojetDeltaR[ii]->Fill(minDRgj,evweight);
+               h_minPhojetDeltaR[jj][ii]->Fill(minDRgj,evweight); 
 
-              h_DiPhoDijetDeltaR[ii]->Fill(DijetP4.DeltaR(DiPhoP4),evweight);
-              h_DiPhoDijetPt[ii]->Fill(DiPhoDijetP4.Pt(),evweight);
-              h_DiPhoDijetEta[ii]->Fill(DiPhoDijetP4.Eta(),evweight);
-              h_DiPhoDijetPhi[ii]->Fill(DiPhoDijetP4.Phi(),evweight);
-              h_DiPhoDijetInvMass[ii]->Fill(DiPhoDijetP4.M(),evweight);
+               h_DiPhoDijetDeltaR[jj][ii]->Fill(DijetP4.DeltaR(DiPhoP4),evweight);
+               h_DiPhoDijetPt[jj][ii]->Fill(DiPhoDijetP4.Pt(),evweight);
+               h_DiPhoDijetEta[jj][ii]->Fill(DiPhoDijetP4.Eta(),evweight);
+               h_DiPhoDijetPhi[jj][ii]->Fill(DiPhoDijetP4.Phi(),evweight);
+               h_DiPhoDijetInvMass[jj][ii]->Fill(DiPhoDijetP4.M(),evweight);
 
-              if(evweight > 5) continue;
+               if(evweight > 5) continue;
 
-              h2_Pho1Pt_vs_jet1Pt[ii]->Fill(pho1_pt,jet1_pt,evweight);
-              h2_Pho2Pt_vs_jet2Pt[ii]->Fill(pho2_pt,jet2_pt,evweight);
-              h2_Pho1Eta_vs_jet1Eta[ii]->Fill(pho1_eta,jet1_eta,evweight);
-              h2_Pho2Eta_vs_jet2Eta[ii]->Fill(pho2_eta,jet2_eta,evweight);
-              h2_Pho1Phi_vs_jet1Phi[ii]->Fill(pho1_phi,jet1_phi,evweight);
-              h2_Pho2Phi_vs_jet2Phi[ii]->Fill(pho2_phi,jet2_phi,evweight);
-              h2_DiPhoInvMass_vs_DijetInvMass[ii]->Fill(gg_mass,DijetP4.M(),evweight);
-              h2_DiPhoPt_vs_DijetPt[ii]->Fill(gg_pt,jj_pt,evweight);
-              h2_DiPhoEta_vs_DijetEta[ii]->Fill(gg_eta,jj_eta,evweight);
-              h2_DiPhoPhi_vs_DijetPhi[ii]->Fill(gg_phi,jj_phi,evweight);
-              h2_DiPhoDeltaR_vs_DijetDeltaR[ii]->Fill(Pho1P4.DeltaR(Pho2P4),jj_DR,evweight);
-              h2_DiPhoCosthetastar_vs_DijetCosthetastar[ii]->Fill(costhetastar,Hjj_Rstar.CosTheta(),evweight);
+               h2_Pho1Pt_vs_jet1Pt[jj][ii]->Fill(pho1_pt,jet1_pt,evweight);
+               h2_Pho2Pt_vs_jet2Pt[jj][ii]->Fill(pho2_pt,jet2_pt,evweight);
+               h2_Pho1Eta_vs_jet1Eta[jj][ii]->Fill(pho1_eta,jet1_eta,evweight);
+               h2_Pho2Eta_vs_jet2Eta[jj][ii]->Fill(pho2_eta,jet2_eta,evweight);
+               h2_Pho1Phi_vs_jet1Phi[jj][ii]->Fill(pho1_phi,jet1_phi,evweight);
+               h2_Pho2Phi_vs_jet2Phi[jj][ii]->Fill(pho2_phi,jet2_phi,evweight);
+               h2_DiPhoInvMass_vs_DijetInvMass[jj][ii]->Fill(gg_mass,DijetP4.M(),evweight);
+               h2_DiPhoPt_vs_DijetPt[jj][ii]->Fill(gg_pt,jj_pt,evweight);
+               h2_DiPhoEta_vs_DijetEta[jj][ii]->Fill(gg_eta,jj_eta,evweight);
+               h2_DiPhoPhi_vs_DijetPhi[jj][ii]->Fill(gg_phi,jj_phi,evweight);
+               h2_DiPhoDeltaR_vs_DijetDeltaR[jj][ii]->Fill(Pho1P4.DeltaR(Pho2P4),jj_DR,evweight);
+               h2_DiPhoCosthetastar_vs_DijetCosthetastar[jj][ii]->Fill(costhetastar,Hjj_Rstar.CosTheta(),evweight);
+              }
           }
       }
   }
@@ -883,57 +907,63 @@ int main(int argc, char** argv)
                  if(category == 2) h_ref_DiPhoPt_2btag_SB[ii]->Fill(gg_pt,evweight);
               }
 
-              h_ref_PhoPt[ii]->Fill(pho1_pt,evweight);       h_ref_PhoPt[ii]->Fill(pho2_pt,evweight);
-              h_ref_PhoEta[ii]->Fill(pho1_eta,evweight);     h_ref_PhoEta[ii]->Fill(pho2_eta,evweight);
-              h_ref_PhoPhi[ii]->Fill(pho1_phi,evweight);     h_ref_PhoPhi[ii]->Fill(pho2_phi,evweight);
-              h_ref_PhoR9[ii]->Fill(pho1_r9,evweight);       h_ref_PhoR9[ii]->Fill(pho2_r9,evweight);
-              h_ref_PhoHoE[ii]->Fill(pho1_hoe,evweight);     h_ref_PhoHoE[ii]->Fill(pho2_hoe,evweight);
-              h_ref_PhoSieie[ii]->Fill(pho1_sieie,evweight); h_ref_PhoSieie[ii]->Fill(pho2_sieie,evweight);
+              for(int jj = 0; jj < 3; jj++){
+              
+               if(jj == 1 && category != 1) continue;
+               if(jj == 2 && category != 2) continue;
+               
+               h_ref_PhoPt[jj][ii]->Fill(pho1_pt,evweight);       h_ref_PhoPt[jj][ii]->Fill(pho2_pt,evweight);
+               h_ref_PhoEta[jj][ii]->Fill(pho1_eta,evweight);     h_ref_PhoEta[jj][ii]->Fill(pho2_eta,evweight);
+               h_ref_PhoPhi[jj][ii]->Fill(pho1_phi,evweight);     h_ref_PhoPhi[jj][ii]->Fill(pho2_phi,evweight);
+               h_ref_PhoR9[jj][ii]->Fill(pho1_r9,evweight);       h_ref_PhoR9[jj][ii]->Fill(pho2_r9,evweight);
+               h_ref_PhoHoE[jj][ii]->Fill(pho1_hoe,evweight);     h_ref_PhoHoE[jj][ii]->Fill(pho2_hoe,evweight);
+               h_ref_PhoSieie[jj][ii]->Fill(pho1_sieie,evweight); h_ref_PhoSieie[jj][ii]->Fill(pho2_sieie,evweight);
 
-              h_ref_DiPhoPt[ii]->Fill(gg_pt,evweight);
-              h_ref_DiPhoEta[ii]->Fill(gg_eta,evweight);
-              h_ref_DiPhoPhi[ii]->Fill(gg_phi,evweight);
-              h_ref_DiPhoDeltaR[ii]->Fill(Pho1P4.DeltaR(Pho2P4),evweight);
-              h_ref_DiPhoInvMass[ii]->Fill(gg_mass,evweight);
-              h_ref_DiPhoCosthetastar[ii]->Fill(costhetastar,evweight);
+               h_ref_DiPhoPt[jj][ii]->Fill(gg_pt,evweight);
+               h_ref_DiPhoEta[jj][ii]->Fill(gg_eta,evweight);
+               h_ref_DiPhoPhi[jj][ii]->Fill(gg_phi,evweight);
+               h_ref_DiPhoDeltaR[jj][ii]->Fill(Pho1P4.DeltaR(Pho2P4),evweight);
+               h_ref_DiPhoInvMass[jj][ii]->Fill(gg_mass,evweight);
+               h_ref_DiPhoCosthetastar[jj][ii]->Fill(costhetastar,evweight);
       
-              h_ref_jetPt[ii]->Fill(jet1_pt,evweight);                           h_ref_jetPt[ii]->Fill(jet2_pt,evweight);
-              h_ref_jetEta[ii]->Fill(jet1_eta,evweight);                         h_ref_jetEta[ii]->Fill(jet2_eta,evweight);
-              h_ref_jetPhi[ii]->Fill(jet1_phi,evweight);                         h_ref_jetPhi[ii]->Fill(jet2_phi,evweight);
-              h_ref_jetcsvBtag[ii]->Fill(jet1_csvBtag,evweight);                 h_ref_jetcsvBtag[ii]->Fill(jet2_csvBtag,evweight);
-              h_ref_jetbetaStarClassic[ii]->Fill(jet1_betaStarClassic,evweight); h_ref_jetbetaStarClassic[ii]->Fill(jet2_betaStarClassic,evweight);
-              h_ref_jetdR2Mean[ii]->Fill(jet1_dR2Mean,evweight);                 h_ref_jetdR2Mean[ii]->Fill(jet2_dR2Mean,evweight);
+               h_ref_jetPt[jj][ii]->Fill(jet1_pt,evweight);                           h_ref_jetPt[jj][ii]->Fill(jet2_pt,evweight);
+               h_ref_jetEta[jj][ii]->Fill(jet1_eta,evweight);                         h_ref_jetEta[jj][ii]->Fill(jet2_eta,evweight);
+               h_ref_jetPhi[jj][ii]->Fill(jet1_phi,evweight);                         h_ref_jetPhi[jj][ii]->Fill(jet2_phi,evweight);
+               h_ref_jetcsvBtag[jj][ii]->Fill(jet1_csvBtag,evweight);                 h_ref_jetcsvBtag[jj][ii]->Fill(jet2_csvBtag,evweight);
+               h_ref_jetbetaStarClassic[jj][ii]->Fill(jet1_betaStarClassic,evweight); h_ref_jetbetaStarClassic[jj][ii]->Fill(jet2_betaStarClassic,evweight);
+               h_ref_jetdR2Mean[jj][ii]->Fill(jet1_dR2Mean,evweight);                 h_ref_jetdR2Mean[jj][ii]->Fill(jet2_dR2Mean,evweight);
           
-              h_ref_DijetPt[ii]->Fill(jj_pt,evweight);
-              h_ref_DijetEta[ii]->Fill(jj_eta,evweight);
-              h_ref_DijetPhi[ii]->Fill(jj_phi,evweight);
-              h_ref_DijetDeltaR[ii]->Fill(jj_DR,evweight);
-              h_ref_DijetInvMass[ii]->Fill(DijetP4.M(),evweight);
-              h_ref_DijetCosthetastar[ii]->Fill(Hjj_Rstar.CosTheta(),evweight);
+               h_ref_DijetPt[jj][ii]->Fill(jj_pt,evweight);
+               h_ref_DijetEta[jj][ii]->Fill(jj_eta,evweight);
+               h_ref_DijetPhi[jj][ii]->Fill(jj_phi,evweight);
+               h_ref_DijetDeltaR[jj][ii]->Fill(jj_DR,evweight);
+               h_ref_DijetInvMass[jj][ii]->Fill(DijetP4.M(),evweight);
+               h_ref_DijetCosthetastar[jj][ii]->Fill(Hjj_Rstar.CosTheta(),evweight);
 
-              h_ref_minPhojetDeltaR[ii]->Fill(minDRgj,evweight);
+               h_ref_minPhojetDeltaR[jj][ii]->Fill(minDRgj,evweight); 
 
-              h_ref_DiPhoDijetDeltaR[ii]->Fill(DijetP4.DeltaR(DiPhoP4),evweight);
-              h_ref_DiPhoDijetPt[ii]->Fill(DiPhoDijetP4.Pt(),evweight);
-              h_ref_DiPhoDijetEta[ii]->Fill(DiPhoDijetP4.Eta(),evweight);
-              h_ref_DiPhoDijetPhi[ii]->Fill(DiPhoDijetP4.Phi(),evweight);
-              h_ref_DiPhoDijetInvMass[ii]->Fill(DiPhoDijetP4.M(),evweight);
+               h_ref_DiPhoDijetDeltaR[jj][ii]->Fill(DijetP4.DeltaR(DiPhoP4),evweight);
+               h_ref_DiPhoDijetPt[jj][ii]->Fill(DiPhoDijetP4.Pt(),evweight);
+               h_ref_DiPhoDijetEta[jj][ii]->Fill(DiPhoDijetP4.Eta(),evweight);
+               h_ref_DiPhoDijetPhi[jj][ii]->Fill(DiPhoDijetP4.Phi(),evweight);
+               h_ref_DiPhoDijetInvMass[jj][ii]->Fill(DiPhoDijetP4.M(),evweight);
 
-              if(evweight > 5) continue;
+               if(evweight > 5) continue;
 
-              h2_ref_Pho1Pt_vs_jet1Pt[ii]->Fill(pho1_pt,jet1_pt,evweight);
-              h2_ref_Pho2Pt_vs_jet2Pt[ii]->Fill(pho2_pt,jet2_pt,evweight);
-              h2_ref_Pho1Eta_vs_jet1Eta[ii]->Fill(pho1_eta,jet1_eta,evweight);
-              h2_ref_Pho2Eta_vs_jet2Eta[ii]->Fill(pho2_eta,jet2_eta,evweight);
-              h2_ref_Pho1Phi_vs_jet1Phi[ii]->Fill(pho1_phi,jet1_phi,evweight);
-              h2_ref_Pho2Phi_vs_jet2Phi[ii]->Fill(pho2_phi,jet2_phi,evweight);
-              h2_ref_DiPhoInvMass_vs_DijetInvMass[ii]->Fill(gg_mass,DijetP4.M(),evweight);
-              h2_ref_DiPhoPt_vs_DijetPt[ii]->Fill(gg_pt,jj_pt,evweight);
-              h2_ref_DiPhoEta_vs_DijetEta[ii]->Fill(gg_eta,jj_eta,evweight);
-              h2_ref_DiPhoPhi_vs_DijetPhi[ii]->Fill(gg_phi,jj_phi,evweight);
-              h2_ref_DiPhoDeltaR_vs_DijetDeltaR[ii]->Fill(Pho1P4.DeltaR(Pho2P4),jj_DR,evweight);
-              h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[ii]->Fill(costhetastar,Hjj_Rstar.CosTheta(),evweight);
-          }
+               h2_ref_Pho1Pt_vs_jet1Pt[jj][ii]->Fill(pho1_pt,jet1_pt,evweight);
+               h2_ref_Pho2Pt_vs_jet2Pt[jj][ii]->Fill(pho2_pt,jet2_pt,evweight);
+               h2_ref_Pho1Eta_vs_jet1Eta[jj][ii]->Fill(pho1_eta,jet1_eta,evweight);
+               h2_ref_Pho2Eta_vs_jet2Eta[jj][ii]->Fill(pho2_eta,jet2_eta,evweight);
+               h2_ref_Pho1Phi_vs_jet1Phi[jj][ii]->Fill(pho1_phi,jet1_phi,evweight);
+               h2_ref_Pho2Phi_vs_jet2Phi[jj][ii]->Fill(pho2_phi,jet2_phi,evweight);
+               h2_ref_DiPhoInvMass_vs_DijetInvMass[jj][ii]->Fill(gg_mass,DijetP4.M(),evweight);
+               h2_ref_DiPhoPt_vs_DijetPt[jj][ii]->Fill(gg_pt,jj_pt,evweight);
+               h2_ref_DiPhoEta_vs_DijetEta[jj][ii]->Fill(gg_eta,jj_eta,evweight);
+               h2_ref_DiPhoPhi_vs_DijetPhi[jj][ii]->Fill(gg_phi,jj_phi,evweight);
+               h2_ref_DiPhoDeltaR_vs_DijetDeltaR[jj][ii]->Fill(Pho1P4.DeltaR(Pho2P4),jj_DR,evweight);
+               h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[jj][ii]->Fill(costhetastar,Hjj_Rstar.CosTheta(),evweight);
+              }
+          }    
 
   }
 
@@ -1044,72 +1074,75 @@ int main(int argc, char** argv)
       h_ref_numberEvents_2btag->SetBinContent(h_ref_numberEvents_2btag->FindBin(ii),integral_Ref_2btag);
       h_FigOfMerit_2btag->SetBinContent(h_FigOfMerit_2btag->FindBin(ii),integral_Ref_2btag/sqrt(integral_Ref_2btag+integral_2btag));
 
-      std::string doCUT = cutString[ii];
-      gStyle->SetOptStat(1110); 
-      //gStyle->SetOptStat(0000); 
-      compareHistos(h_ref_PhoPt[ii], h_PhoPt[ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_PhoEta[ii], h_PhoEta[ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_PhoPhi[ii], h_PhoPhi[ii], std::string("g_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_PhoR9[ii], h_PhoR9[ii], std::string("g_r9"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_PhoHoE[ii], h_PhoHoE[ii], std::string("g_hoe"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_PhoSieie[ii], h_PhoSieie[ii], std::string("g_sieie"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+      for(int jj = 0; jj < 3; jj++){
+       std::string doCUT = cutString[ii]+catString[jj];
+       gStyle->SetOptStat(1110); 
+       //gStyle->SetOptStat(0000); 
+       compareHistos(h_ref_PhoPt[jj][ii], h_PhoPt[jj][ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_PhoEta[jj][ii], h_PhoEta[jj][ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_PhoPhi[jj][ii], h_PhoPhi[jj][ii], std::string("g_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_PhoR9[jj][ii], h_PhoR9[jj][ii], std::string("g_r9"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_PhoHoE[jj][ii], h_PhoHoE[jj][ii], std::string("g_hoe"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_PhoSieie[jj][ii], h_PhoSieie[jj][ii], std::string("g_sieie"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
 
-      compareHistos(h_ref_DiPhoPt[ii], h_DiPhoPt[ii], std::string("gg_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoEta[ii], h_DiPhoEta[ii], std::string("gg_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoPhi[ii], h_DiPhoPhi[ii], std::string("gg_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoDeltaR[ii], h_DiPhoDeltaR[ii], std::string("gg_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoInvMass[ii], h_DiPhoInvMass[ii], std::string("gg_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoCosthetastar[ii], h_DiPhoCosthetastar[ii], std::string("gg_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoPt[jj][ii], h_DiPhoPt[jj][ii], std::string("gg_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoEta[jj][ii], h_DiPhoEta[jj][ii], std::string("gg_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoPhi[jj][ii], h_DiPhoPhi[jj][ii], std::string("gg_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoDeltaR[jj][ii], h_DiPhoDeltaR[jj][ii], std::string("gg_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoInvMass[jj][ii], h_DiPhoInvMass[jj][ii], std::string("gg_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoCosthetastar[jj][ii], h_DiPhoCosthetastar[jj][ii], std::string("gg_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
   
-      compareHistos(h_ref_jetPt[ii], h_jetPt[ii], std::string("j_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_jetEta[ii], h_jetEta[ii], std::string("j_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_jetPhi[ii], h_jetPhi[ii], std::string("j_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_jetcsvBtag[ii], h_jetcsvBtag[ii], std::string("j_csvBtag"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);  
-      compareHistos(h_ref_jetbetaStarClassic[ii], h_jetbetaStarClassic[ii], std::string("j_betaStarClassic"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_jetdR2Mean[ii], h_jetdR2Mean[ii], std::string("j_dR2Mean"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetPt[jj][ii], h_jetPt[jj][ii], std::string("j_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetEta[jj][ii], h_jetEta[jj][ii], std::string("j_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetPhi[jj][ii], h_jetPhi[jj][ii], std::string("j_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetcsvBtag[jj][ii], h_jetcsvBtag[jj][ii], std::string("j_csvBtag"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);  
+       compareHistos(h_ref_jetbetaStarClassic[jj][ii], h_jetbetaStarClassic[jj][ii], std::string("j_betaStarClassic"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_jetdR2Mean[jj][ii], h_jetdR2Mean[jj][ii], std::string("j_dR2Mean"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
 
-      compareHistos(h_ref_DijetPt[ii], h_DijetPt[ii], std::string("jj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DijetEta[ii], h_DijetEta[ii], std::string("jj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DijetPhi[ii], h_DijetPhi[ii], std::string("jj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DijetDeltaR[ii], h_DijetDeltaR[ii], std::string("jj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DijetInvMass[ii], h_DijetInvMass[ii], std::string("jj_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DijetCosthetastar[ii], h_DijetCosthetastar[ii], std::string("jj_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetPt[jj][ii], h_DijetPt[jj][ii], std::string("jj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetEta[jj][ii], h_DijetEta[jj][ii], std::string("jj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetPhi[jj][ii], h_DijetPhi[jj][ii], std::string("jj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetDeltaR[jj][ii], h_DijetDeltaR[jj][ii], std::string("jj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetInvMass[jj][ii], h_DijetInvMass[jj][ii], std::string("jj_Mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DijetCosthetastar[jj][ii], h_DijetCosthetastar[jj][ii], std::string("jj_costhetastar"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
 
-      compareHistos(h_ref_minPhojetDeltaR[ii], h_minPhojetDeltaR[ii], std::string("minGJ_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
+       compareHistos(h_ref_minPhojetDeltaR[jj][ii], h_minPhojetDeltaR[jj][ii], std::string("minGJ_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
 
-      compareHistos(h_ref_DiPhoDijetDeltaR[ii], h_DiPhoDijetDeltaR[ii], std::string("ggjj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoDijetPt[ii], h_DiPhoDijetPt[ii], std::string("ggjj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoDijetEta[ii], h_DiPhoDijetEta[ii], std::string("ggjj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoDijetPhi[ii], h_DiPhoDijetPhi[ii], std::string("ggjj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
-      compareHistos(h_ref_DiPhoDijetInvMass[ii], h_DiPhoDijetInvMass[ii], std::string("ggjj_mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
+       compareHistos(h_ref_DiPhoDijetDeltaR[jj][ii], h_DiPhoDijetDeltaR[jj][ii], std::string("ggjj_dR"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoDijetPt[jj][ii], h_DiPhoDijetPt[jj][ii], std::string("ggjj_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoDijetEta[jj][ii], h_DiPhoDijetEta[jj][ii], std::string("ggjj_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoDijetPhi[jj][ii], h_DiPhoDijetPhi[jj][ii], std::string("ggjj_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref);
+       compareHistos(h_ref_DiPhoDijetInvMass[jj][ii], h_DiPhoDijetInvMass[jj][ii], std::string("ggjj_mass"), std::string("signal"), std::string("bkg") , outputDir, doCUT, integral, integral_Ref); 
 
-      //gStyle->SetOptStat(1110); 
-      gStyle->SetOptStat(0000); 
-      draw2DHisto(h2_ref_Pho1Pt_vs_jet1Pt[ii], std::string("g1_pt"), std::string("j1_pt"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho1Pt_vs_jet1Pt[ii], std::string("g1_pt"), std::string("j1_pt"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_Pho2Pt_vs_jet2Pt[ii], std::string("g2_pt"), std::string("j2_pt"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho2Pt_vs_jet2Pt[ii], std::string("g2_pt"), std::string("j2_pt"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_Pho1Eta_vs_jet1Eta[ii], std::string("g1_eta"), std::string("j1_eta"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho1Eta_vs_jet1Eta[ii], std::string("g1_eta"), std::string("j1_eta"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_Pho2Eta_vs_jet2Eta[ii], std::string("g2_eta"), std::string("j2_eta"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho2Eta_vs_jet2Eta[ii], std::string("g2_eta"), std::string("j2_eta"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_Pho1Phi_vs_jet1Phi[ii], std::string("g1_phi"), std::string("j1_phi"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho1Phi_vs_jet1Phi[ii], std::string("g1_phi"), std::string("j1_phi"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_Pho2Phi_vs_jet2Phi[ii], std::string("g2_phi"), std::string("j2_phi"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_Pho2Phi_vs_jet2Phi[ii], std::string("g2_phi"), std::string("j2_phi"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoInvMass_vs_DijetInvMass[ii], std::string("gg_mass"), std::string("jj_mass"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoInvMass_vs_DijetInvMass[ii], std::string("gg_mass"), std::string("jj_mass"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoPt_vs_DijetPt[ii], std::string("gg_pt"), std::string("jj_pt"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoPt_vs_DijetPt[ii], std::string("gg_pt"), std::string("jj_pt"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoEta_vs_DijetEta[ii], std::string("gg_eta"), std::string("jj_eta"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoEta_vs_DijetEta[ii], std::string("gg_eta"), std::string("jj_eta"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoPhi_vs_DijetPhi[ii], std::string("gg_phi"), std::string("jj_phi"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoPhi_vs_DijetPhi[ii], std::string("gg_phi"), std::string("jj_phi"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoDeltaR_vs_DijetDeltaR[ii], std::string("gg_dR"), std::string("jj_dR"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoDeltaR_vs_DijetDeltaR[ii], std::string("gg_dR"), std::string("jj_dR"),std::string("bkg"),outputDir,doCUT);
-      draw2DHisto(h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[ii], std::string("gg_costhetastar"), std::string("jj_costhetastar"),std::string("signal"),outputDir,doCUT);
-      draw2DHisto(h2_DiPhoCosthetastar_vs_DijetCosthetastar[ii], std::string("gg_costhetastar"), std::string("jj_costhetastar"),std::string("bkg"),outputDir,doCUT); 
-
+       //gStyle->SetOptStat(1110); 
+       gStyle->SetOptStat(0000); 
+       draw2DHisto(h2_ref_Pho1Pt_vs_jet1Pt[jj][ii], std::string("g1_pt"), std::string("j1_pt"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho1Pt_vs_jet1Pt[jj][ii], std::string("g1_pt"), std::string("j1_pt"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_Pho2Pt_vs_jet2Pt[jj][ii], std::string("g2_pt"), std::string("j2_pt"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho2Pt_vs_jet2Pt[jj][ii], std::string("g2_pt"), std::string("j2_pt"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_Pho1Eta_vs_jet1Eta[jj][ii], std::string("g1_eta"), std::string("j1_eta"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho1Eta_vs_jet1Eta[jj][ii], std::string("g1_eta"), std::string("j1_eta"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_Pho2Eta_vs_jet2Eta[jj][ii], std::string("g2_eta"), std::string("j2_eta"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho2Eta_vs_jet2Eta[jj][ii], std::string("g2_eta"), std::string("j2_eta"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_Pho1Phi_vs_jet1Phi[jj][ii], std::string("g1_phi"), std::string("j1_phi"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho1Phi_vs_jet1Phi[jj][ii], std::string("g1_phi"), std::string("j1_phi"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_Pho2Phi_vs_jet2Phi[jj][ii], std::string("g2_phi"), std::string("j2_phi"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_Pho2Phi_vs_jet2Phi[jj][ii], std::string("g2_phi"), std::string("j2_phi"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoInvMass_vs_DijetInvMass[jj][ii], std::string("gg_mass"), std::string("jj_mass"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoInvMass_vs_DijetInvMass[jj][ii], std::string("gg_mass"), std::string("jj_mass"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoPt_vs_DijetPt[jj][ii], std::string("gg_pt"), std::string("jj_pt"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoPt_vs_DijetPt[jj][ii], std::string("gg_pt"), std::string("jj_pt"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoEta_vs_DijetEta[jj][ii], std::string("gg_eta"), std::string("jj_eta"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoEta_vs_DijetEta[jj][ii], std::string("gg_eta"), std::string("jj_eta"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoPhi_vs_DijetPhi[jj][ii], std::string("gg_phi"), std::string("jj_phi"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoPhi_vs_DijetPhi[jj][ii], std::string("gg_phi"), std::string("jj_phi"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoDeltaR_vs_DijetDeltaR[jj][ii], std::string("gg_dR"), std::string("jj_dR"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoDeltaR_vs_DijetDeltaR[jj][ii], std::string("gg_dR"), std::string("jj_dR"),std::string("bkg"),outputDir,doCUT);
+       draw2DHisto(h2_ref_DiPhoCosthetastar_vs_DijetCosthetastar[jj][ii], std::string("gg_costhetastar"), std::string("jj_costhetastar"),std::string("signal"),outputDir,doCUT);
+       draw2DHisto(h2_DiPhoCosthetastar_vs_DijetCosthetastar[jj][ii], std::string("gg_costhetastar"), std::string("jj_costhetastar"),std::string("bkg"),outputDir,doCUT); 
+      }
+      
+      std::string doCUT = cutString[ii];
       compareHistosSB(h_data_DiPhoPt_SB[ii],h_ref_DiPhoPt_SB[ii],h_DiPhoPt_SB[ii],std::string("gg_pt"), std::string("Data"), std::string("Signal"),std::string("Bkg") , outputDir, doCUT,integral_data_SB,integral_Ref_SB,integral_SB, std::string(""));
       compareHistosSB(h_data_DiPhoPt_1btag_SB[ii],h_ref_DiPhoPt_1btag_SB[ii],h_DiPhoPt_1btag_SB[ii],std::string("gg_pt"), std::string("Data"), std::string("Signal"),std::string("Bkg") , outputDir, doCUT,integral_data_1btag_SB,integral_Ref_1btag_SB,integral_1btag_SB,std::string("_1btag"));
       compareHistosSB(h_data_DiPhoPt_2btag_SB[ii],h_ref_DiPhoPt_2btag_SB[ii],h_DiPhoPt_2btag_SB[ii],std::string("gg_pt"), std::string("Data"), std::string("Signal"),std::string("Bkg") , outputDir, doCUT,integral_data_2btag_SB,integral_Ref_2btag_SB,integral_2btag_SB,std::string("_2btag"));
@@ -1127,6 +1160,7 @@ int main(int argc, char** argv)
   drawNumEvents(h_FigOfMerit,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit"),outputDir,cutString);
   drawNumEvents(h_FigOfMerit_1btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_1btag"),outputDir,cutString);
   drawNumEvents(h_FigOfMerit_2btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_2btag"),outputDir,cutString);
+
 }
 
 
@@ -1141,10 +1175,10 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
     double FoM = integral_Ref/sqrt(integral+integral_Ref);
     char FoM_buffer[50];
     sprintf(FoM_buffer,"S/sqrt(S+B) = %f",FoM);
-    
+
     histo_DA -> Scale(1./histo_DA->Integral());
     histo_MC -> Scale(1./histo_MC->Integral());
-    
+
     histo_DA -> GetXaxis() -> SetLabelSize(0);
     histo_DA -> GetYaxis() -> SetLabelSize(0.04);
     histo_DA -> GetXaxis() -> SetTitleSize(0.05);
@@ -1152,8 +1186,7 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
     histo_DA -> GetYaxis() -> SetTitleOffset(1.25);
 
     histo_DA -> GetXaxis() -> SetTitle(xTitle.c_str());
-    histo_MC -> GetXaxis() -> SetTitle(xTitle.c_str());
-
+    histo_MC -> GetXaxis() -> SetTitle(xTitle.c_str());
     histo_DA -> GetYaxis() -> SetTitle("");
     histo_MC -> GetYaxis() -> SetTitle("");
     
@@ -1166,7 +1199,7 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
         
     histo_MC -> SetLineWidth(2);
     histo_DA -> SetLineWidth(2);
-   
+    
     float maximum = -1.;
     if( histo_DA -> GetMaximum() > maximum ) maximum = histo_DA -> GetMaximum();
     if( histo_MC -> GetMaximum() > maximum ) maximum = histo_MC -> GetMaximum();
@@ -1174,13 +1207,13 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
     histo_DA -> SetMinimum( 0. );
     histo_MC -> SetMaximum( 1.2*maximum );
     histo_MC -> SetMinimum( 0. );
-      
+
     TCanvas* c1 = new TCanvas("c1","c1");
     c1 -> cd();
     
     TPaveStats* st_DA = new TPaveStats();
     TPaveStats* st_MC = new TPaveStats();
-    
+   
     histo_MC -> Draw("");
     gPad -> Update();
     st_MC= (TPaveStats*)(histo_MC->GetListOfFunctions()->FindObject("stats"));
@@ -1208,11 +1241,11 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
     legend -> SetLineColor(kWhite);
     legend -> SetTextFont(42);  
     legend -> SetTextSize(0.04);
-    
+
     legend -> AddEntry(histo_DA,label_DA.c_str(),"L");
     legend -> AddEntry(histo_MC,label_MC.c_str(),"F");
     legend -> Draw("same");
-    
+
     TLatex* latex = new TLatex(0.026, 0.97, xTitle.c_str());
     latex -> SetNDC();
     latex -> SetTextFont(kBlack);
@@ -1238,7 +1271,8 @@ void compareHistos(TH1F* histo_DA, TH1F* histo_MC, std::string xTitle, std::stri
     latex -> SetTextColor(kBlack);
     latex -> SetTextSize(0.030);
     latex -> Draw("same");
-    
+
+
     c1 -> Print((outputDir+"comp_h_"+xTitle+doCUT+".png").c_str(),"png");
     c1 -> Print((outputDir+"comp_h_"+xTitle+doCUT+".pdf").c_str(),"pdf");
 
