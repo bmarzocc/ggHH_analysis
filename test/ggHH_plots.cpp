@@ -845,7 +845,7 @@ int main(int argc, char** argv)
       if(ientry%100000==0) std::cout<<"--- Reading Ref_file entry = "<< ientry <<std::endl;
           ntu_ref->GetEntry(ientry);
            
-          evweight = evweight*0.26/100.; //BR HbbHgg;
+          evweight = evweight*2*0.26/100.; //BR HbbHgg;
           
           Pho1P4.SetPtEtaPhiE(pho1_pt,pho1_eta,pho1_phi,pho1_e);
           Pho2P4.SetPtEtaPhiE(pho2_pt,pho2_eta,pho2_phi,pho2_e);
