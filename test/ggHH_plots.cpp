@@ -432,6 +432,8 @@ int main(int argc, char** argv)
 
   std::map<int,std::map<int,TH1F*> > h_PhoPt; 
   std::map<int,std::map<int,TH1F*> > h_PhoEta;
+  std::map<int,std::map<int,TH1F*> > h_Pho1Eta;
+  std::map<int,std::map<int,TH1F*> > h_Pho2Eta;
   std::map<int,std::map<int,TH1F*> > h_PhoPhi; 
   std::map<int,std::map<int,TH1F*> > h_PhoR9; 
   std::map<int,std::map<int,TH1F*> > h_PhoHoE; 
@@ -493,6 +495,8 @@ int main(int argc, char** argv)
   for(unsigned int jj = 0; jj < cutString.size(); jj++){
    h_PhoPt[ii][jj] = new TH1F((std::string("h_PhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
    h_PhoEta[ii][jj] = new TH1F((std::string("h_PhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_Pho1Eta[ii][jj] = new TH1F((std::string("h_Pho1Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_Pho1Eta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_Pho2Eta[ii][jj] = new TH1F((std::string("h_Pho2Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_Pho2Eta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
    h_PhoPhi[ii][jj] = new TH1F((std::string("h_PhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
    h_PhoR9[ii][jj] = new TH1F((std::string("h_PhoR9")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoR9")+cutString[jj]+catString[ii]).c_str(),50,0.,1.);
    h_PhoHoE[ii][jj] = new TH1F((std::string("h_PhoHoE")+cutString[jj]+catString[ii]).c_str(),(std::string("h_PhoHoE")+cutString[jj]+catString[ii]).c_str(),50,0.,0.05);
@@ -545,6 +549,8 @@ int main(int argc, char** argv)
 
   std::map<int,std::map<int,TH1F*> > h_ref_PhoPt; 
   std::map<int,std::map<int,TH1F*> > h_ref_PhoEta;
+  std::map<int,std::map<int,TH1F*> > h_ref_Pho1Eta;
+  std::map<int,std::map<int,TH1F*> > h_ref_Pho2Eta;
   std::map<int,std::map<int,TH1F*> > h_ref_PhoPhi; 
   std::map<int,std::map<int,TH1F*> > h_ref_PhoR9; 
   std::map<int,std::map<int,TH1F*> > h_ref_PhoHoE; 
@@ -605,6 +611,8 @@ int main(int argc, char** argv)
   for(unsigned int jj = 0; jj < cutString.size(); jj++){
    h_ref_PhoPt[ii][jj] = new TH1F((std::string("h_ref_PhoPt")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoPt")+cutString[jj]+catString[ii]).c_str(),100,0.,500.);
    h_ref_PhoEta[ii][jj] = new TH1F((std::string("h_ref_PhoEta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoEta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_Pho1Eta[ii][jj] = new TH1F((std::string("h_ref_Pho1Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_Pho1Eta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
+   h_ref_Pho2Eta[ii][jj] = new TH1F((std::string("h_ref_Pho2Eta")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_Pho2Eta")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
    h_ref_PhoPhi[ii][jj] = new TH1F((std::string("h_ref_PhoPhi")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoPhi")+cutString[jj]+catString[ii]).c_str(),70,-3.5,3.5);
    h_ref_PhoR9[ii][jj] = new TH1F((std::string("h_ref_PhoR9")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoR9")+cutString[jj]+catString[ii]).c_str(),50,0.,1.);
    h_ref_PhoHoE[ii][jj] = new TH1F((std::string("h_ref_PhoHoE")+cutString[jj]+catString[ii]).c_str(),(std::string("h_ref_PhoHoE")+cutString[jj]+catString[ii]).c_str(),50,0.,0.05);
@@ -770,6 +778,7 @@ int main(int argc, char** argv)
                
                h_PhoPt[jj][ii]->Fill(pho1_pt,evweight);       h_PhoPt[jj][ii]->Fill(pho2_pt,evweight);
                h_PhoEta[jj][ii]->Fill(pho1_eta,evweight);     h_PhoEta[jj][ii]->Fill(pho2_eta,evweight);
+               h_Pho1Eta[jj][ii]->Fill(pho1_eta,evweight);    h_Pho2Eta[jj][ii]->Fill(pho2_eta,evweight);
                h_PhoPhi[jj][ii]->Fill(pho1_phi,evweight);     h_PhoPhi[jj][ii]->Fill(pho2_phi,evweight);
                h_PhoR9[jj][ii]->Fill(pho1_r9,evweight);       h_PhoR9[jj][ii]->Fill(pho2_r9,evweight);
                h_PhoHoE[jj][ii]->Fill(pho1_hoe,evweight);     h_PhoHoE[jj][ii]->Fill(pho2_hoe,evweight);
@@ -914,6 +923,7 @@ int main(int argc, char** argv)
                
                h_ref_PhoPt[jj][ii]->Fill(pho1_pt,evweight);       h_ref_PhoPt[jj][ii]->Fill(pho2_pt,evweight);
                h_ref_PhoEta[jj][ii]->Fill(pho1_eta,evweight);     h_ref_PhoEta[jj][ii]->Fill(pho2_eta,evweight);
+               h_ref_Pho1Eta[jj][ii]->Fill(pho1_eta,evweight);    h_ref_Pho2Eta[jj][ii]->Fill(pho2_eta,evweight);
                h_ref_PhoPhi[jj][ii]->Fill(pho1_phi,evweight);     h_ref_PhoPhi[jj][ii]->Fill(pho2_phi,evweight);
                h_ref_PhoR9[jj][ii]->Fill(pho1_r9,evweight);       h_ref_PhoR9[jj][ii]->Fill(pho2_r9,evweight);
                h_ref_PhoHoE[jj][ii]->Fill(pho1_hoe,evweight);     h_ref_PhoHoE[jj][ii]->Fill(pho2_hoe,evweight);
@@ -1097,6 +1107,8 @@ int main(int argc, char** argv)
        
        compareHistos(h_ref_PhoPt[jj][ii], h_PhoPt[jj][ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_PhoEta[jj][ii], h_PhoEta[jj][ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_Pho1Eta[jj][ii], h_Pho1Eta[jj][ii], std::string("g1_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
+       compareHistos(h_ref_Pho2Eta[jj][ii], h_Pho2Eta[jj][ii], std::string("g2_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_PhoPhi[jj][ii], h_PhoPhi[jj][ii], std::string("g_phi"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_PhoR9[jj][ii], h_PhoR9[jj][ii], std::string("g_r9"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_PhoHoE[jj][ii], h_PhoHoE[jj][ii], std::string("g_hoe"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
