@@ -10,7 +10,7 @@
 #ifndef CONFIGPARSER_H
 #define CONFIGPARSER_H
 
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ConfigFileLine.h"
+#include "ConfigFileLine.h"
 #include "TROOT.h"
 #include "TObject.h"
 

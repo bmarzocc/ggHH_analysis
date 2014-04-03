@@ -17,7 +17,7 @@
 #include "Math/Vector3D.h"
 #include "Math/Vector4D.h"
 #include "Math/Boost.h"*/
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ConfigParser.h"
+#include "ConfigParser.h"
 
 /** get the parameters from a congiguration file */
 int parseConfigFile (const TString& config) ;
