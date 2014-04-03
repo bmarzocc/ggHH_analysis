@@ -19,7 +19,7 @@
  * 
 */
 
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ConfigParser.h"
+#include "ConfigParser.h"
 #include <cstdlib>
 #include <cstring>
 #include <iostream>

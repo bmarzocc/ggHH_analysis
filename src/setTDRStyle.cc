@@ -1,4 +1,4 @@
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/setTDRStyle.h"
+#include "setTDRStyle.h"
 
 
 

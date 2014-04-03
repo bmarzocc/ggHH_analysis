@@ -28,7 +28,7 @@
  * for it.
 */
 
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ConfigFileLine.h"
+#include "ConfigFileLine.h"
 #include <iostream>
 
 using namespace std;

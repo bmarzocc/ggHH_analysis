@@ -1,4 +1,4 @@
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ParserUtils.h"
+#include "ParserUtils.h"
 
 int parseConfigFile (const TString& config)
 {

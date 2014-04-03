@@ -9,7 +9,7 @@
 
 #line 4 "config_parser.y"
 
-#include "/afs/cern.ch/work/b/bmarzocc/Analyses/interface/ConfigParser.h"
+#include "ConfigParser.h"
 #include <stdio.h>
 #include <iostream>
 #include <string>
