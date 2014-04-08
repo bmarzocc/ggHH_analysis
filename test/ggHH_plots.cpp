@@ -2,6 +2,7 @@
 #include "ConfigParser.h"
 #include "ParserUtils.h"
 #include "setTDRStyle.h"
+#include "BTagUtils.h"
 
 #include "TROOT.h"
 #include "TStyle.h"
@@ -151,6 +152,7 @@ int main(int argc, char** argv)
   catString[2] = "_2btag";
 
   int           category;
+  float         event;
   float         evweight;
   float         pho1_pt;
   float         pho1_e;
@@ -174,6 +176,12 @@ int main(int argc, char** argv)
   float         jet1_eta;
   float         jet1_mass;
   float         jet1_csvBtag;
+  float         jet1_btagSF_M;
+  float         jet1_btagSFErrorUp_M;
+  float         jet1_btagSFErrorDown_M;
+  float         jet1_btagEff_M;
+  float         jet1_btagEffError_M;
+  int           jet1_flavour;
   float         jet1_betaStarClassic;
   float         jet1_dR2Mean;
   float         jet2_pt;
@@ -182,6 +190,12 @@ int main(int argc, char** argv)
   float         jet2_eta;
   float         jet2_mass;
   float         jet2_csvBtag;
+  float         jet2_btagSF_M;
+  float         jet2_btagSFErrorUp_M;
+  float         jet2_btagSFErrorDown_M;
+  float         jet2_btagEff_M;
+  float         jet2_btagEffError_M;
+  int           jet2_flavour;
   float         jet2_betaStarClassic;
   float         jet2_dR2Mean;
   float         jj_pt;
@@ -204,6 +218,7 @@ int main(int argc, char** argv)
 
   // List of branches
    TBranch        *b_category;   //!
+   TBranch        *b_event;   //!
    TBranch        *b_evweight;   //!
    TBranch        *b_pho1_pt;   //!
    TBranch        *b_pho1_e;   //!
@@ -227,6 +242,12 @@ int main(int argc, char** argv)
    TBranch        *b_jet1_eta;   //!
    TBranch        *b_jet1_mass;   //!
    TBranch        *b_jet1_csvBtag;   //!
+   TBranch        *b_jet1_btagSF_M;   //!
+   TBranch        *b_jet1_btagSFErrorUp_M;   //!
+   TBranch        *b_jet1_btagSFErrorDown_M;   //!
+   TBranch        *b_jet1_btagEff_M;   //!
+   TBranch        *b_jet1_btagEffError_M;   //!
+   TBranch        *b_jet1_flavour;   //!
    TBranch        *b_jet1_betaStarClassic;   //!
    TBranch        *b_jet1_dR2Mean;   //!
    TBranch        *b_jet2_pt;   //!
@@ -235,6 +256,12 @@ int main(int argc, char** argv)
    TBranch        *b_jet2_eta;   //!
    TBranch        *b_jet2_mass;   //!
    TBranch        *b_jet2_csvBtag;   //!
+   TBranch        *b_jet2_btagSF_M;   //!
+   TBranch        *b_jet2_btagSFErrorUp_M;   //!
+   TBranch        *b_jet2_btagSFErrorDown_M;   //!
+   TBranch        *b_jet2_btagEff_M;   //!
+   TBranch        *b_jet2_btagEffError_M;   //!
+   TBranch        *b_jet2_flavour;   //!
    TBranch        *b_jet2_betaStarClassic;   //!
    TBranch        *b_jet2_dR2Mean;   //!
    TBranch        *b_jj_pt;   //!
@@ -257,6 +284,7 @@ int main(int argc, char** argv)
 
   for(int ii = 0; ii < pos_total; ii++){
    ntu[ii]->SetBranchAddress("category", &category, &b_category);
+   ntu[ii]->SetBranchAddress("event", &event, &b_event);
    ntu[ii]->SetBranchAddress("evweight", &evweight, &b_evweight);
    ntu[ii]->SetBranchAddress("pho1_pt", &pho1_pt, &b_pho1_pt);
    ntu[ii]->SetBranchAddress("pho1_e", &pho1_e, &b_pho1_e);
@@ -280,6 +308,12 @@ int main(int argc, char** argv)
    ntu[ii]->SetBranchAddress("jet1_eta", &jet1_eta, &b_jet1_eta);
    ntu[ii]->SetBranchAddress("jet1_mass", &jet1_mass, &b_jet1_mass);
    ntu[ii]->SetBranchAddress("jet1_csvBtag", &jet1_csvBtag, &b_jet1_csvBtag);
+   ntu[ii]->SetBranchAddress("jet1_btagSF_M", &jet1_btagSF_M, &b_jet1_btagSF_M);
+   ntu[ii]->SetBranchAddress("jet1_btagSFErrorUp_M", &jet1_btagSFErrorUp_M, &b_jet1_btagSFErrorUp_M);
+   ntu[ii]->SetBranchAddress("jet1_btagSFErrorDown_M", &jet1_btagSFErrorDown_M, &b_jet1_btagSFErrorDown_M);
+   ntu[ii]->SetBranchAddress("jet1_btagEff_M", &jet1_btagEff_M, &b_jet1_btagEff_M);
+   ntu[ii]->SetBranchAddress("jet1_btagEffError_M", &jet1_btagEffError_M, &b_jet1_btagEffError_M);
+   ntu[ii]->SetBranchAddress("jet1_flavour", &jet1_flavour, &b_jet1_flavour);
    ntu[ii]->SetBranchAddress("jet1_betaStarClassic", &jet1_betaStarClassic, &b_jet1_betaStarClassic);
    ntu[ii]->SetBranchAddress("jet1_dR2Mean", &jet1_dR2Mean, &b_jet1_dR2Mean);
    ntu[ii]->SetBranchAddress("jet2_pt", &jet2_pt, &b_jet2_pt);
@@ -288,6 +322,12 @@ int main(int argc, char** argv)
    ntu[ii]->SetBranchAddress("jet2_eta", &jet2_eta, &b_jet2_eta);
    ntu[ii]->SetBranchAddress("jet2_mass", &jet2_mass, &b_jet2_mass);
    ntu[ii]->SetBranchAddress("jet2_csvBtag", &jet2_csvBtag, &b_jet2_csvBtag);
+   ntu[ii]->SetBranchAddress("jet2_btagSF_M", &jet2_btagSF_M, &b_jet2_btagSF_M);
+   ntu[ii]->SetBranchAddress("jet2_btagSFErrorUp_M", &jet2_btagSFErrorUp_M, &b_jet2_btagSFErrorUp_M);
+   ntu[ii]->SetBranchAddress("jet2_btagSFErrorDown_M", &jet2_btagSFErrorDown_M, &b_jet2_btagSFErrorDown_M);
+   ntu[ii]->SetBranchAddress("jet2_btagEff_M", &jet2_btagEff_M, &b_jet2_btagEff_M);
+   ntu[ii]->SetBranchAddress("jet2_btagEffError_M", &jet2_btagEffError_M, &b_jet2_btagEffError_M);
+   ntu[ii]->SetBranchAddress("jet2_flavour", &jet2_flavour, &b_jet2_flavour);
    ntu[ii]->SetBranchAddress("jet2_betaStarClassic", &jet2_betaStarClassic, &b_jet2_betaStarClassic);
    ntu[ii]->SetBranchAddress("jet2_dR2Mean", &jet2_dR2Mean, &b_jet2_dR2Mean);
    ntu[ii]->SetBranchAddress("jj_pt", &jj_pt, &b_jj_pt);
@@ -310,6 +350,7 @@ int main(int argc, char** argv)
   }
 
    ntu_ref->SetBranchAddress("category", &category, &b_category);
+   ntu_ref->SetBranchAddress("event", &event, &b_event);
    ntu_ref->SetBranchAddress("evweight", &evweight, &b_evweight);
    ntu_ref->SetBranchAddress("pho1_pt", &pho1_pt, &b_pho1_pt);
    ntu_ref->SetBranchAddress("pho1_e", &pho1_e, &b_pho1_e);
@@ -332,6 +373,12 @@ int main(int argc, char** argv)
    ntu_ref->SetBranchAddress("jet1_eta", &jet1_eta, &b_jet1_eta);
    ntu_ref->SetBranchAddress("jet1_mass", &jet1_mass, &b_jet1_mass);
    ntu_ref->SetBranchAddress("jet1_csvBtag", &jet1_csvBtag, &b_jet1_csvBtag);
+   ntu_ref->SetBranchAddress("jet1_btagSF_M", &jet1_btagSF_M, &b_jet1_btagSF_M);
+   ntu_ref->SetBranchAddress("jet1_btagSFErrorUp_M", &jet1_btagSFErrorUp_M, &b_jet1_btagSFErrorUp_M);
+   ntu_ref->SetBranchAddress("jet1_btagSFErrorDown_M", &jet1_btagSFErrorDown_M, &b_jet1_btagSFErrorDown_M);
+   ntu_ref->SetBranchAddress("jet1_btagEff_M", &jet1_btagEff_M, &b_jet1_btagEff_M);
+   ntu_ref->SetBranchAddress("jet1_btagEffError_M", &jet1_btagEffError_M, &b_jet1_btagEffError_M);
+   ntu_ref->SetBranchAddress("jet1_flavour", &jet1_flavour, &b_jet1_flavour);
    ntu_ref->SetBranchAddress("jet1_betaStarClassic", &jet1_betaStarClassic, &b_jet1_betaStarClassic);
    ntu_ref->SetBranchAddress("jet1_dR2Mean", &jet1_dR2Mean, &b_jet1_dR2Mean);
    ntu_ref->SetBranchAddress("jet2_pt", &jet2_pt, &b_jet2_pt);
@@ -340,6 +387,12 @@ int main(int argc, char** argv)
    ntu_ref->SetBranchAddress("jet2_eta", &jet2_eta, &b_jet2_eta);
    ntu_ref->SetBranchAddress("jet2_mass", &jet2_mass, &b_jet2_mass);
    ntu_ref->SetBranchAddress("jet2_csvBtag", &jet2_csvBtag, &b_jet2_csvBtag);
+   ntu_ref->SetBranchAddress("jet2_btagSF_M", &jet2_btagSF_M, &b_jet2_btagSF_M);
+   ntu_ref->SetBranchAddress("jet2_btagSFErrorUp_M", &jet2_btagSFErrorUp_M, &b_jet2_btagSFErrorUp_M);
+   ntu_ref->SetBranchAddress("jet2_btagSFErrorDown_M", &jet2_btagSFErrorDown_M, &b_jet2_btagSFErrorDown_M);
+   ntu_ref->SetBranchAddress("jet2_btagEff_M", &jet2_btagEff_M, &b_jet2_btagEff_M);
+   ntu_ref->SetBranchAddress("jet2_btagEffError_M", &jet2_btagEffError_M, &b_jet2_btagEffError_M);
+   ntu_ref->SetBranchAddress("jet2_flavour", &jet2_flavour, &b_jet2_flavour);
    ntu_ref->SetBranchAddress("jet2_betaStarClassic", &jet2_betaStarClassic, &b_jet2_betaStarClassic);
    ntu_ref->SetBranchAddress("jet2_dR2Mean", &jet2_dR2Mean, &b_jet2_dR2Mean);
    ntu_ref->SetBranchAddress("jj_pt", &jj_pt, &b_jj_pt);
@@ -360,6 +413,7 @@ int main(int argc, char** argv)
    ntu_ref->SetBranchAddress("ggjj_phi", &ggjj_phi, &b_ggjj_phi);
    ntu_ref->SetBranchAddress("ggjj_mass", &ggjj_mass, &b_ggjj_mass);
 
+   ntu_data->SetBranchAddress("event", &event, &b_event);
    ntu_data->SetBranchAddress("category", &category, &b_category);
    ntu_data->SetBranchAddress("evweight", &evweight, &b_evweight);
    ntu_data->SetBranchAddress("pho1_pt", &pho1_pt, &b_pho1_pt);
@@ -383,6 +437,12 @@ int main(int argc, char** argv)
    ntu_data->SetBranchAddress("jet1_eta", &jet1_eta, &b_jet1_eta);
    ntu_data->SetBranchAddress("jet1_mass", &jet1_mass, &b_jet1_mass);
    ntu_data->SetBranchAddress("jet1_csvBtag", &jet1_csvBtag, &b_jet1_csvBtag);
+   ntu_data->SetBranchAddress("jet1_btagSF_M", &jet1_btagSF_M, &b_jet1_btagSF_M);
+   ntu_data->SetBranchAddress("jet1_btagSFErrorUp_M", &jet1_btagSFErrorUp_M, &b_jet1_btagSFErrorUp_M);
+   ntu_data->SetBranchAddress("jet1_btagSFErrorDown_M", &jet1_btagSFErrorDown_M, &b_jet1_btagSFErrorDown_M);
+   ntu_data->SetBranchAddress("jet1_btagEff_M", &jet1_btagEff_M, &b_jet1_btagEff_M);
+   ntu_data->SetBranchAddress("jet1_btagEffError_M", &jet1_btagEffError_M, &b_jet1_btagEffError_M);
+   ntu_data->SetBranchAddress("jet1_flavour", &jet1_flavour, &b_jet1_flavour);
    ntu_data->SetBranchAddress("jet1_betaStarClassic", &jet1_betaStarClassic, &b_jet1_betaStarClassic);
    ntu_data->SetBranchAddress("jet1_dR2Mean", &jet1_dR2Mean, &b_jet1_dR2Mean);
    ntu_data->SetBranchAddress("jet2_pt", &jet2_pt, &b_jet2_pt);
@@ -391,6 +451,12 @@ int main(int argc, char** argv)
    ntu_data->SetBranchAddress("jet2_eta", &jet2_eta, &b_jet2_eta);
    ntu_data->SetBranchAddress("jet2_mass", &jet2_mass, &b_jet2_mass);
    ntu_data->SetBranchAddress("jet2_csvBtag", &jet2_csvBtag, &b_jet2_csvBtag);
+   ntu_data->SetBranchAddress("jet2_btagSF_M", &jet2_btagSF_M, &b_jet2_btagSF_M);
+   ntu_data->SetBranchAddress("jet2_btagSFErrorUp_M", &jet2_btagSFErrorUp_M, &b_jet2_btagSFErrorUp_M);
+   ntu_data->SetBranchAddress("jet2_btagSFErrorDown_M", &jet2_btagSFErrorDown_M, &b_jet2_btagSFErrorDown_M);
+   ntu_data->SetBranchAddress("jet2_btagEff_M", &jet2_btagEff_M, &b_jet2_btagEff_M);
+   ntu_data->SetBranchAddress("jet2_btagEffError_M", &jet2_btagEffError_M, &b_jet2_btagEffError_M);
+   ntu_data->SetBranchAddress("jet2_flavour", &jet2_flavour, &b_jet2_flavour);
    ntu_data->SetBranchAddress("jet2_betaStarClassic", &jet2_betaStarClassic, &b_jet2_betaStarClassic);
    ntu_data->SetBranchAddress("jet2_dR2Mean", &jet2_dR2Mean, &b_jet2_dR2Mean);
    ntu_data->SetBranchAddress("jj_pt", &jj_pt, &b_jj_pt);
@@ -411,6 +477,224 @@ int main(int argc, char** argv)
    ntu_data->SetBranchAddress("ggjj_phi", &ggjj_phi, &b_ggjj_phi);
    ntu_data->SetBranchAddress("ggjj_mass", &ggjj_mass, &b_ggjj_mass);
 
+  float         event_output;
+  float         pho1_pt_output;
+  float         pho1_e_output;
+  float         pho1_phi_output;
+  float         pho1_eta_output;
+  float         pho1_mass_output;
+  float         pho1_r9_output;
+  float         pho2_pt_output;
+  float         pho2_e_output;
+  float         pho2_phi_output;
+  float         pho2_eta_output;
+  float         pho2_mass_output;
+  float         pho2_r9_output;
+  float         jet1_pt_output;
+  float         jet1_e_output;
+  float         jet1_phi_output;
+  float         jet1_eta_output;
+  float         jet1_mass_output;
+  float         jet1_csvBtag_output;
+  float         jet1_btagSF_M_output;
+  float         jet1_btagSFErrorUp_M_output;
+  float         jet1_btagSFErrorDown_M_output;
+  float         jet1_btagEff_M_output;
+  float         jet1_btagEffError_M_output;
+  int           jet1_flavour_output;
+  float         jet2_pt_output;
+  float         jet2_e_output;
+  float         jet2_phi_output;
+  float         jet2_eta_output;
+  float         jet2_mass_output;
+  float         jet2_csvBtag_output;
+  float         jet2_btagSF_M_output;
+  float         jet2_btagSFErrorUp_M_output;
+  float         jet2_btagSFErrorDown_M_output;
+  float         jet2_btagEff_M_output;
+  float         jet2_btagEffError_M_output;
+  int           jet2_flavour_output;
+  float         mgg_output;
+  float         mjj_output;
+  float         mtot_output;
+  float         mtot_wokinfit_output;
+  int           cut_based_ct_output;
+  float         evWeight_output;
+  float         weight_output;
+  float         weightBtagSF_output;
+  float         weightBtagSFerrUp_output;
+  float         weightBtagSFerrDown_output;
+   
+  std::map<int,TTree*> outTree;
+  std::map<int,TTree*> outTree_ref;
+  std::map<int,TTree*> outTree_data;
+  
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+   outTree[ii] = new TTree("TCVARS","TCVARS");
+   outTree[ii]->SetDirectory(0);
+
+   outTree[ii] -> Branch("event",                   &event_output,                       "event/F");
+   outTree[ii] -> Branch("pho1_pt",                 &pho1_pt_output,                     "pho1_pt/F");
+   outTree[ii] -> Branch("pho1_e",                  &pho1_e_output,                      "pho1_e/F");
+   outTree[ii] -> Branch("pho1_eta",                &pho1_eta_output,                    "pho1_eta/F");
+   outTree[ii] -> Branch("pho1_phi",                &pho1_phi_output,                    "pho1_phi/F");
+   outTree[ii] -> Branch("pho1_mass",               &pho1_mass_output,                   "pho1_mass/F");
+   outTree[ii] -> Branch("pho1_r9",                 &pho1_r9_output,                     "pho1_r9/F");
+   outTree[ii] -> Branch("pho2_pt",                 &pho2_pt_output,                     "pho2_pt/F");
+   outTree[ii] -> Branch("pho2_e",                  &pho2_e_output,                      "pho2_e/F");
+   outTree[ii] -> Branch("pho2_eta",                &pho2_eta_output,                    "pho2_eta/F");
+   outTree[ii] -> Branch("pho2_phi",                &pho2_phi_output,                    "pho2_phi/F");
+   outTree[ii] -> Branch("pho2_mass",               &pho2_mass_output,                   "pho2_mass/F");
+   outTree[ii] -> Branch("pho2_r9",                 &pho2_r9_output,                     "pho2_r9/F");
+   outTree[ii] -> Branch("jet1_pt",                 &jet1_pt_output,                     "jet1_pt/F");
+   outTree[ii] -> Branch("jet1_e",                  &jet1_e_output,                      "jet1_e/F");
+   outTree[ii] -> Branch("jet1_eta",                &jet1_eta_output,                    "jet1_eta/F");
+   outTree[ii] -> Branch("jet1_phi",                &jet1_phi_output,                    "jet1_phi/F");
+   outTree[ii] -> Branch("jet1_mass",               &jet1_mass_output,                   "jet1_mass/F");
+   outTree[ii] -> Branch("jet1_csvBtag",            &jet1_csvBtag_output,                "jet1_csvBtag/F");
+   outTree[ii] -> Branch("jet1_btagSF_M",           &jet1_btagSF_M_output,               "jet1_btagSF_M/F");
+   outTree[ii] -> Branch("jet1_btagSFErrorUp_M",    &jet1_btagSFErrorUp_M_output,        "jet1_btagSFErrorUp_M/F");
+   outTree[ii] -> Branch("jet1_btagSFErrorDown_M",  &jet1_btagSFErrorDown_M_output,      "jet1_btagSFErrorDown_M/F");
+   outTree[ii] -> Branch("jet1_btagEff_M",          &jet1_btagEff_M_output,              "jet1_btagEff_M/F");
+   outTree[ii] -> Branch("jet1_btagEffError_M",     &jet1_btagEffError_M_output,         "jet1_btagEffError_M/F");
+   outTree[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/F");
+   outTree[ii] -> Branch("jet2_pt",                 &jet2_pt_output,                     "jet2_pt/F");
+   outTree[ii] -> Branch("jet2_e",                  &jet2_e_output,                      "jet2_e/F");
+   outTree[ii] -> Branch("jet2_eta",                &jet2_eta_output,                    "jet2_eta/F");
+   outTree[ii] -> Branch("jet2_phi",                &jet2_phi_output,                    "jet2_phi/F");
+   outTree[ii] -> Branch("jet2_mass",               &jet2_mass_output,                   "jet2_mass/F");
+   outTree[ii] -> Branch("jet2_csvBtag",            &jet2_csvBtag_output,                "jet2_csvBtag/F");
+   outTree[ii] -> Branch("jet2_btagSF_M",           &jet2_btagSF_M_output,               "jet2_btagSF_M/F");
+   outTree[ii] -> Branch("jet2_btagSFErrorUp_M",    &jet2_btagSFErrorUp_M_output,        "jet2_btagSFErrorUp_M/F");
+   outTree[ii] -> Branch("jet2_btagSFErrorDown_M",  &jet2_btagSFErrorDown_M_output,      "jet2_btagSFErrorDown_M/F");
+   outTree[ii] -> Branch("jet2_btagEff_M",          &jet2_btagEff_M_output,              "jet2_btagEff_M/F");
+   outTree[ii] -> Branch("jet2_btagEffError_M",     &jet2_btagEffError_M_output,         "jet2_btagEffError_M/F");
+   outTree[ii] -> Branch("jet2_flavour",            &jet2_flavour_output,                "jet2_flavour/F");
+   outTree[ii] -> Branch("mgg",                     &mgg_output,                         "mgg/F");
+   outTree[ii] -> Branch("mjj",                     &mjj_output,                         "mjj/F");
+   outTree[ii] -> Branch("mtot",                    &mtot_output,                        "mtot/F");
+   outTree[ii] -> Branch("mtot_wokinfit",           &mtot_wokinfit_output,               "mtot_wokinfit/F");
+   outTree[ii] -> Branch("cut_based_ct",            &cut_based_ct_output,                "cut_based_ct/F");
+   outTree[ii] -> Branch("evWeight",                &evWeight_output,                    "evWeight/F");
+   outTree[ii] -> Branch("weight",                  &weight_output,                      "weight/F");
+   outTree[ii] -> Branch("weightBtagSF",            &weightBtagSF_output,                "weightBtagSF/F");
+   outTree[ii] -> Branch("weightBtagSFerrUp",       &weightBtagSFerrUp_output,           "weightBtagSFerrUp/F");
+   outTree[ii] -> Branch("weightBtagSFerrDown",     &weightBtagSFerrDown_output,         "weightBtagSFerrDown/F");
+
+  }
+
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+   outTree_ref[ii] = new TTree("TCVARS","TCVARS");
+   outTree_ref[ii]->SetDirectory(0);
+
+   outTree_ref[ii] -> Branch("event",                   &event_output,                       "event/F");
+   outTree_ref[ii] -> Branch("pho1_pt",                 &pho1_pt_output,                     "pho1_pt/F");
+   outTree_ref[ii] -> Branch("pho1_e",                  &pho1_e_output,                      "pho1_e/F");
+   outTree_ref[ii] -> Branch("pho1_eta",                &pho1_eta_output,                    "pho1_eta/F");
+   outTree_ref[ii] -> Branch("pho1_phi",                &pho1_phi_output,                    "pho1_phi/F");
+   outTree_ref[ii] -> Branch("pho1_mass",               &pho1_mass_output,                   "pho1_mass/F");
+   outTree_ref[ii] -> Branch("pho1_r9",                 &pho1_r9_output,                     "pho1_r9/F");
+   outTree_ref[ii] -> Branch("pho2_pt",                 &pho2_pt_output,                     "pho2_pt/F");
+   outTree_ref[ii] -> Branch("pho2_e",                  &pho2_e_output,                      "pho2_e/F");
+   outTree_ref[ii] -> Branch("pho2_eta",                &pho2_eta_output,                    "pho2_eta/F");
+   outTree_ref[ii] -> Branch("pho2_phi",                &pho2_phi_output,                    "pho2_phi/F");
+   outTree_ref[ii] -> Branch("pho2_mass",               &pho2_mass_output,                   "pho2_mass/F");
+   outTree_ref[ii] -> Branch("pho2_r9",                 &pho2_r9_output,                     "pho2_r9/F");
+   outTree_ref[ii] -> Branch("jet1_pt",                 &jet1_pt_output,                     "jet1_pt/F");
+   outTree_ref[ii] -> Branch("jet1_e",                  &jet1_e_output,                      "jet1_e/F");
+   outTree_ref[ii] -> Branch("jet1_eta",                &jet1_eta_output,                    "jet1_eta/F");
+   outTree_ref[ii] -> Branch("jet1_phi",                &jet1_phi_output,                    "jet1_phi/F");
+   outTree_ref[ii] -> Branch("jet1_mass",               &jet1_mass_output,                   "jet1_mass/F");
+   outTree_ref[ii] -> Branch("jet1_csvBtag",            &jet1_csvBtag_output,                "jet1_csvBtag/F");
+   outTree_ref[ii] -> Branch("jet1_btagSF_M",           &jet1_btagSF_M_output,               "jet1_btagSF_M/F");
+   outTree_ref[ii] -> Branch("jet1_btagSFErrorUp_M",    &jet1_btagSFErrorUp_M_output,        "jet1_btagSFErrorUp_M/F");
+   outTree_ref[ii] -> Branch("jet1_btagSFErrorDown_M",  &jet1_btagSFErrorDown_M_output,      "jet1_btagSFErrorDown_M/F");
+   outTree_ref[ii] -> Branch("jet1_btagEff_M",          &jet1_btagEff_M_output,              "jet1_btagEff_M/F");
+   outTree_ref[ii] -> Branch("jet1_btagEffError_M",     &jet1_btagEffError_M_output,         "jet1_btagEffError_M/F");
+   outTree_ref[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/F");
+   outTree_ref[ii] -> Branch("jet2_pt",                 &jet2_pt_output,                     "jet2_pt/F");
+   outTree_ref[ii] -> Branch("jet2_e",                  &jet2_e_output,                      "jet2_e/F");
+   outTree_ref[ii] -> Branch("jet2_eta",                &jet2_eta_output,                    "jet2_eta/F");
+   outTree_ref[ii] -> Branch("jet2_phi",                &jet2_phi_output,                    "jet2_phi/F");
+   outTree_ref[ii] -> Branch("jet2_mass",               &jet2_mass_output,                   "jet2_mass/F");
+   outTree_ref[ii] -> Branch("jet2_csvBtag",            &jet2_csvBtag_output,                "jet2_csvBtag/F");
+   outTree_ref[ii] -> Branch("jet2_btagSF_M",           &jet2_btagSF_M_output,               "jet2_btagSF_M/F");
+   outTree_ref[ii] -> Branch("jet2_btagSFErrorUp_M",    &jet2_btagSFErrorUp_M_output,        "jet2_btagSFErrorUp_M/F");
+   outTree_ref[ii] -> Branch("jet2_btagSFErrorDown_M",  &jet2_btagSFErrorDown_M_output,      "jet2_btagSFErrorDown_M/F");
+   outTree_ref[ii] -> Branch("jet2_btagEff_M",          &jet2_btagEff_M_output,              "jet2_btagEff_M/F");
+   outTree_ref[ii] -> Branch("jet2_btagEffError_M",     &jet2_btagEffError_M_output,         "jet2_btagEffError_M/F");
+   outTree_ref[ii] -> Branch("jet2_flavour",            &jet2_flavour_output,                "jet2_flavour/F");
+   outTree_ref[ii] -> Branch("mgg",                     &mgg_output,                         "mgg/F");
+   outTree_ref[ii] -> Branch("mjj",                     &mjj_output,                         "mjj/F");
+   outTree_ref[ii] -> Branch("mtot",                    &mtot_output,                        "mtot/F");
+   outTree_ref[ii] -> Branch("mtot_wokinfit",           &mtot_wokinfit_output,               "mtot_wokinfit/F");
+   outTree_ref[ii] -> Branch("cut_based_ct",            &cut_based_ct_output,                "cut_based_ct/F");
+   outTree_ref[ii] -> Branch("evWeight",                &evWeight_output,                    "evWeight/F");
+   outTree_ref[ii] -> Branch("weight",                  &weight_output,                      "weight/F");
+   outTree_ref[ii] -> Branch("weightBtagSF",            &weightBtagSF_output,                "weightBtagSF/F");
+   outTree_ref[ii] -> Branch("weightBtagSFerrUp",       &weightBtagSFerrUp_output,           "weightBtagSFerrUp/F");
+   outTree_ref[ii] -> Branch("weightBtagSFerrDown",     &weightBtagSFerrDown_output,         "weightBtagSFerrDown/F");
+
+  }
+  
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+   outTree_data[ii] = new TTree("TCVARS","TCVARS");
+   outTree_data[ii]->SetDirectory(0);
+
+   outTree_data[ii] -> Branch("event",                   &event_output,                       "event/F");
+   outTree_data[ii] -> Branch("pho1_pt",                 &pho1_pt_output,                     "pho1_pt/F");
+   outTree_data[ii] -> Branch("pho1_e",                  &pho1_e_output,                      "pho1_e/F");
+   outTree_data[ii] -> Branch("pho1_eta",                &pho1_eta_output,                    "pho1_eta/F");
+   outTree_data[ii] -> Branch("pho1_phi",                &pho1_phi_output,                    "pho1_phi/F");
+   outTree_data[ii] -> Branch("pho1_mass",               &pho1_mass_output,                   "pho1_mass/F");
+   outTree_data[ii] -> Branch("pho1_r9",                 &pho1_r9_output,                     "pho1_r9/F");
+   outTree_data[ii] -> Branch("pho2_pt",                 &pho2_pt_output,                     "pho2_pt/F");
+   outTree_data[ii] -> Branch("pho2_e",                  &pho2_e_output,                      "pho2_e/F");
+   outTree_data[ii] -> Branch("pho2_eta",                &pho2_eta_output,                    "pho2_eta/F");
+   outTree_data[ii] -> Branch("pho2_phi",                &pho2_phi_output,                    "pho2_phi/F");
+   outTree_data[ii] -> Branch("pho2_mass",               &pho2_mass_output,                   "pho2_mass/F");
+   outTree_data[ii] -> Branch("pho2_r9",                 &pho2_r9_output,                     "pho2_r9/F");
+   outTree_data[ii] -> Branch("jet1_pt",                 &jet1_pt_output,                     "jet1_pt/F");
+   outTree_data[ii] -> Branch("jet1_e",                  &jet1_e_output,                      "jet1_e/F");
+   outTree_data[ii] -> Branch("jet1_eta",                &jet1_eta_output,                    "jet1_eta/F");
+   outTree_data[ii] -> Branch("jet1_phi",                &jet1_phi_output,                    "jet1_phi/F");
+   outTree_data[ii] -> Branch("jet1_mass",               &jet1_mass_output,                   "jet1_mass/F");
+   outTree_data[ii] -> Branch("jet1_csvBtag",            &jet1_csvBtag_output,                "jet1_csvBtag/F");
+   outTree_data[ii] -> Branch("jet1_btagSF_M",           &jet1_btagSF_M_output,               "jet1_btagSF_M/F");
+   outTree_data[ii] -> Branch("jet1_btagSFErrorUp_M",    &jet1_btagSFErrorUp_M_output,        "jet1_btagSFErrorUp_M/F");
+   outTree_data[ii] -> Branch("jet1_btagSFErrorDown_M",  &jet1_btagSFErrorDown_M_output,      "jet1_btagSFErrorDown_M/F");
+   outTree_data[ii] -> Branch("jet1_btagEff_M",          &jet1_btagEff_M_output,              "jet1_btagEff_M/F");
+   outTree_data[ii] -> Branch("jet1_btagEffError_M",     &jet1_btagEffError_M_output,         "jet1_btagEffError_M/F");
+   outTree_data[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/F");
+   outTree_data[ii] -> Branch("jet2_pt",                 &jet2_pt_output,                     "jet2_pt/F");
+   outTree_data[ii] -> Branch("jet2_e",                  &jet2_e_output,                      "jet2_e/F");
+   outTree_data[ii] -> Branch("jet2_eta",                &jet2_eta_output,                    "jet2_eta/F");
+   outTree_data[ii] -> Branch("jet2_phi",                &jet2_phi_output,                    "jet2_phi/F");
+   outTree_data[ii] -> Branch("jet2_mass",               &jet2_mass_output,                   "jet2_mass/F");
+   outTree_data[ii] -> Branch("jet2_csvBtag",            &jet2_csvBtag_output,                "jet2_csvBtag/F");
+   outTree_data[ii] -> Branch("jet2_btagSF_M",           &jet2_btagSF_M_output,               "jet2_btagSF_M/F");
+   outTree_data[ii] -> Branch("jet2_btagSFErrorUp_M",    &jet2_btagSFErrorUp_M_output,        "jet2_btagSFErrorUp_M/F");
+   outTree_data[ii] -> Branch("jet2_btagSFErrorDown_M",  &jet2_btagSFErrorDown_M_output,      "jet2_btagSFErrorDown_M/F");
+   outTree_data[ii] -> Branch("jet2_btagEff_M",          &jet2_btagEff_M_output,              "jet2_btagEff_M/F");
+   outTree_data[ii] -> Branch("jet2_btagEffError_M",     &jet2_btagEffError_M_output,         "jet2_btagEffError_M/F");
+   outTree_data[ii] -> Branch("jet2_flavour",            &jet2_flavour_output,                "jet2_flavour/F");
+   outTree_data[ii] -> Branch("mgg",                     &mgg_output,                         "mgg/F");
+   outTree_data[ii] -> Branch("mjj",                     &mjj_output,                         "mjj/F");
+   outTree_data[ii] -> Branch("mtot",                    &mtot_output,                        "mtot/F");
+   outTree_data[ii] -> Branch("mtot_wokinfit",           &mtot_wokinfit_output,               "mtot_wokinfit/F");
+   outTree_data[ii] -> Branch("cut_based_ct",            &cut_based_ct_output,                "cut_based_ct/F");
+   outTree_data[ii] -> Branch("evWeight",                &evWeight_output,                    "evWeight/F");
+   outTree_data[ii] -> Branch("weight",                  &weight_output,                      "weight/F");
+   outTree_data[ii] -> Branch("weightBtagSF",            &weightBtagSF_output,                "weightBtagSF/F");
+   outTree_data[ii] -> Branch("weightBtagSFerrUp",       &weightBtagSFerrUp_output,           "weightBtagSFerrUp/F");
+   outTree_data[ii] -> Branch("weightBtagSFerrDown",     &weightBtagSFerrDown_output,         "weightBtagSFerrDown/F");
+
+  }
+
+  
   TH1D* h_numberEvents = new TH1D("h_numberEvents","h_numberEvents",cutString.size(),0,cutString.size());
   TH1D* h_ref_numberEvents = new TH1D("h_ref_numberEvents","h_ref_numberEvents",cutString.size(),0,cutString.size());
   TH1D* h_FigOfMerit = new TH1D("h_FigOfMerit","h_FigOfMerit",cutString.size(),0,cutString.size());
@@ -701,6 +985,44 @@ int main(int argc, char** argv)
       for(int ientry = 0; ientry < ntu[nn]->GetEntries(); ientry++){
           if(ientry%100000==0) std::cout<<"--- Reading file:" << ntu[nn]->GetName() << " entry = "<< ientry <<std::endl;
           ntu[nn]->GetEntry(ientry);
+           
+          event_output = event;
+          pho1_pt_output = pho1_pt;
+          pho1_e_output = pho1_e;
+          pho1_phi_output = pho1_phi;
+          pho1_eta_output = pho1_eta;
+          pho1_mass_output = pho1_mass;
+          pho1_r9_output = pho1_r9;
+          pho2_pt_output = pho2_pt;
+          pho2_e_output = pho2_e;
+          pho2_phi_output = pho2_phi;
+          pho2_eta_output = pho2_eta;
+          pho2_mass_output = pho2_mass;
+          pho2_r9_output = pho2_r9;
+          jet1_pt_output = jet1_pt;
+          jet1_e_output = jet1_e;
+          jet1_phi_output = jet1_phi;
+          jet1_eta_output = jet1_eta;
+          jet1_mass_output = jet1_mass;
+          jet1_csvBtag_output = jet1_csvBtag;
+          jet1_btagSF_M_output = jet1_btagSF_M;
+          jet1_btagSFErrorUp_M_output = jet1_btagSFErrorUp_M;
+          jet1_btagSFErrorDown_M_output = jet1_btagSFErrorDown_M;
+          jet1_btagEff_M_output = jet1_btagEff_M;
+          jet1_btagEffError_M_output = jet1_btagEffError_M;
+          jet1_flavour_output = jet1_flavour;
+          jet2_pt_output = jet2_pt;
+          jet2_e_output = jet2_e;
+          jet2_phi_output = jet2_phi;
+          jet2_eta_output = jet2_eta;
+          jet2_mass_output = jet2_mass;
+          jet2_csvBtag_output = jet2_csvBtag;
+          jet2_btagSF_M_output = jet2_btagSF_M;
+          jet2_btagSFErrorUp_M_output = jet2_btagSFErrorUp_M;
+          jet2_btagSFErrorDown_M_output = jet2_btagSFErrorDown_M;
+          jet2_btagEff_M_output = jet2_btagEff_M;
+          jet2_btagEffError_M_output = jet2_btagEffError_M;
+          jet2_flavour_output = jet2_flavour;
 
           Pho1P4.SetPtEtaPhiE(pho1_pt,pho1_eta,pho1_phi,pho1_e);
           Pho2P4.SetPtEtaPhiE(pho2_pt,pho2_eta,pho2_phi,pho2_e);
@@ -711,6 +1033,24 @@ int main(int argc, char** argv)
           DiPhoDijetP4 = DijetP4 + DiPhoP4;
           TLorentzVector Hjj_Rstar(DijetP4);
           Hjj_Rstar.Boost(-DiPhoDijetP4.BoostVector());
+
+          mgg_output = gg_mass;
+          mjj_output = DijetP4.M();
+          mtot_output = DiPhoDijetP4.M();
+          mtot_wokinfit_output = -1001.;
+          if(category == 2) cut_based_ct_output = 0;
+          if(category == 1) cut_based_ct_output = 1;
+
+          weight_output = evweight;
+          weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
+          if(fabs(weightBtagSF_output) < 100.) weightBtagSF_output = weightBtagSF_output*evweight;
+          else weightBtagSF_output =  evweight;
+
+          weightBtagSFerrUp_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorUp_M, jet2_btagSF_M, jet2_btagSFErrorUp_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+          weightBtagSFerrDown_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorDown_M, jet2_btagSF_M, jet2_btagSFErrorDown_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+
+          if(fabs(weightBtagSF_output) > 100.) weightBtagSF_output = evweight;
+          evWeight_output = weightBtagSF_output;
 
           if(cutString[cutString.size()-1].find("ggMass") != std::string::npos && (DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.)) typeCut[std::string("ggMass")] = true;
           else typeCut[std::string("ggMass")] = false;
@@ -770,6 +1110,8 @@ int main(int argc, char** argv)
                  if(category == 2) h_NEvents_2btag_SB[ii]->Fill(ievent_2btag_SB[ii],evweight);
                  if(category == 2) h_DiPhoPt_2btag_SB[ii]->Fill(gg_pt,evweight);
               }
+
+              outTree[ii] -> Fill();
               
               for(int jj = 0; jj < 3; jj++){
               
@@ -847,6 +1189,44 @@ int main(int argc, char** argv)
            
           evweight = evweight*0.264/100.; //BR HbbHgg;
           
+          event_output = event;
+          pho1_pt_output = pho1_pt;
+          pho1_e_output = pho1_e;
+          pho1_phi_output = pho1_phi;
+          pho1_eta_output = pho1_eta;
+          pho1_mass_output = pho1_mass;
+          pho1_r9_output = pho1_r9;
+          pho2_pt_output = pho2_pt;
+          pho2_e_output = pho2_e;
+          pho2_phi_output = pho2_phi;
+          pho2_eta_output = pho2_eta;
+          pho2_mass_output = pho2_mass;
+          pho2_r9_output = pho2_r9;
+          jet1_pt_output = jet1_pt;
+          jet1_e_output = jet1_e;
+          jet1_phi_output = jet1_phi;
+          jet1_eta_output = jet1_eta;
+          jet1_mass_output = jet1_mass;
+          jet1_csvBtag_output = jet1_csvBtag;
+          jet1_btagSF_M_output = jet1_btagSF_M;
+          jet1_btagSFErrorUp_M_output = jet1_btagSFErrorUp_M;
+          jet1_btagSFErrorDown_M_output = jet1_btagSFErrorDown_M;
+          jet1_btagEff_M_output = jet1_btagEff_M;
+          jet1_btagEffError_M_output = jet1_btagEffError_M;
+          jet1_flavour_output = jet1_flavour;
+          jet2_pt_output = jet2_pt;
+          jet2_e_output = jet2_e;
+          jet2_phi_output = jet2_phi;
+          jet2_eta_output = jet2_eta;
+          jet2_mass_output = jet2_mass;
+          jet2_csvBtag_output = jet2_csvBtag;
+          jet2_btagSF_M_output = jet2_btagSF_M;
+          jet2_btagSFErrorUp_M_output = jet2_btagSFErrorUp_M;
+          jet2_btagSFErrorDown_M_output = jet2_btagSFErrorDown_M;
+          jet2_btagEff_M_output = jet2_btagEff_M;
+          jet2_btagEffError_M_output = jet2_btagEffError_M;
+          jet2_flavour_output = jet2_flavour;
+
           Pho1P4.SetPtEtaPhiE(pho1_pt,pho1_eta,pho1_phi,pho1_e);
           Pho2P4.SetPtEtaPhiE(pho2_pt,pho2_eta,pho2_phi,pho2_e);
           DiPhoP4 = Pho1P4 + Pho2P4;
@@ -856,6 +1236,23 @@ int main(int argc, char** argv)
           DiPhoDijetP4 = DijetP4 + DiPhoP4;
           TLorentzVector Hjj_Rstar(DijetP4);
           Hjj_Rstar.Boost(-DiPhoDijetP4.BoostVector());
+
+          mgg_output = gg_mass;
+          mjj_output = DijetP4.M();
+          mtot_output = DiPhoDijetP4.M();
+          mtot_wokinfit_output = -1001.;
+          if(category == 2) cut_based_ct_output = 0;
+          if(category == 1) cut_based_ct_output = 1;
+
+          weight_output = evweight;
+          weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
+          if(fabs(weightBtagSF_output) < 100.) weightBtagSF_output = weightBtagSF_output*evweight;
+          else weightBtagSF_output =  evweight;
+          
+          weightBtagSFerrUp_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorUp_M, jet2_btagSF_M, jet2_btagSFErrorUp_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+          weightBtagSFerrDown_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorDown_M, jet2_btagSF_M, jet2_btagSFErrorDown_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+
+          evWeight_output = weightBtagSF_output;
 
           if(cutString[cutString.size()-1].find("ggMass") != std::string::npos && (DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.)) typeCut[std::string("ggMass")] = true;
           else typeCut[std::string("ggMass")] = false;
@@ -915,6 +1312,8 @@ int main(int argc, char** argv)
                  if(category == 2) h_ref_NEvents_2btag_SB[ii]->Fill(ievent_2btag_SB[ii],evweight);
                  if(category == 2) h_ref_DiPhoPt_2btag_SB[ii]->Fill(gg_pt,evweight);
               }
+
+              outTree_ref[ii] -> Fill();
 
               for(int jj = 0; jj < 3; jj++){
               
@@ -990,6 +1389,44 @@ int main(int argc, char** argv)
       if(ientry%100000==0) std::cout<<"--- Reading data_file entry = "<< ientry <<std::endl;
           ntu_data->GetEntry(ientry);
            
+          event_output = event;
+          pho1_pt_output = pho1_pt;
+          pho1_e_output = pho1_e;
+          pho1_phi_output = pho1_phi;
+          pho1_eta_output = pho1_eta;
+          pho1_mass_output = pho1_mass;
+          pho1_r9_output = pho1_r9;
+          pho2_pt_output = pho2_pt;
+          pho2_e_output = pho2_e;
+          pho2_phi_output = pho2_phi;
+          pho2_eta_output = pho2_eta;
+          pho2_mass_output = pho2_mass;
+          pho2_r9_output = pho2_r9;
+          jet1_pt_output = jet1_pt;
+          jet1_e_output = jet1_e;
+          jet1_phi_output = jet1_phi;
+          jet1_eta_output = jet1_eta;
+          jet1_mass_output = jet1_mass;
+          jet1_csvBtag_output = jet1_csvBtag;
+          jet1_btagSF_M_output = jet1_btagSF_M;
+          jet1_btagSFErrorUp_M_output = jet1_btagSFErrorUp_M;
+          jet1_btagSFErrorDown_M_output = jet1_btagSFErrorDown_M;
+          jet1_btagEff_M_output = jet1_btagEff_M;
+          jet1_btagEffError_M_output = jet1_btagEffError_M;
+          jet1_flavour_output = jet1_flavour;
+          jet2_pt_output = jet2_pt;
+          jet2_e_output = jet2_e;
+          jet2_phi_output = jet2_phi;
+          jet2_eta_output = jet2_eta;
+          jet2_mass_output = jet2_mass;
+          jet2_csvBtag_output = jet2_csvBtag;
+          jet2_btagSF_M_output = jet2_btagSF_M;
+          jet2_btagSFErrorUp_M_output = jet2_btagSFErrorUp_M;
+          jet2_btagSFErrorDown_M_output = jet2_btagSFErrorDown_M;
+          jet2_btagEff_M_output = jet2_btagEff_M;
+          jet2_btagEffError_M_output = jet2_btagEffError_M;
+          jet2_flavour_output = jet2_flavour;
+
           Pho1P4.SetPtEtaPhiE(pho1_pt,pho1_eta,pho1_phi,pho1_e);
           Pho2P4.SetPtEtaPhiE(pho2_pt,pho2_eta,pho2_phi,pho2_e);
           DiPhoP4 = Pho1P4 + Pho2P4;
@@ -999,6 +1436,23 @@ int main(int argc, char** argv)
           DiPhoDijetP4 = DijetP4 + DiPhoP4;
           TLorentzVector Hjj_Rstar(DijetP4);
           Hjj_Rstar.Boost(-DiPhoDijetP4.BoostVector());
+
+          mgg_output = gg_mass;
+          mjj_output = DijetP4.M();
+          mtot_output = DiPhoDijetP4.M();
+          mtot_wokinfit_output = -1001.;
+          if(category == 2) cut_based_ct_output = 0;
+          if(category == 1) cut_based_ct_output = 1;
+
+          weight_output = evweight;
+          weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
+          if(fabs(weightBtagSF_output) < 100.) weightBtagSF_output = weightBtagSF_output*evweight;
+          else weightBtagSF_output =  evweight;
+          
+          weightBtagSFerrUp_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorUp_M, jet2_btagSF_M, jet2_btagSFErrorUp_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+          weightBtagSFerrDown_output = eventWeight_error_2jets("medium", jet1_btagSF_M, jet1_btagSFErrorDown_M, jet2_btagSF_M, jet2_btagSFErrorDown_M, jet1_btagEff_M, jet1_btagEffError_M, jet2_btagEff_M, jet2_btagEffError_M, jet1_flavour, jet2_flavour, jet1_csvBtag, jet2_csvBtag);
+
+          evWeight_output = weightBtagSF_output;
 
           if(cutString[cutString.size()-1].find("ggMass") != std::string::npos && (DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.)) typeCut[std::string("ggMass")] = true;
           else typeCut[std::string("ggMass")] = false;
@@ -1031,6 +1485,8 @@ int main(int argc, char** argv)
                  }
 
               if(isGood == false) continue;
+
+              outTree_data[ii] -> Fill();
 
               if(DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.) continue;
 
@@ -1189,6 +1645,27 @@ int main(int argc, char** argv)
   drawNumEvents(h_FigOfMerit,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit"),outputDir,cutString);
   drawNumEvents(h_FigOfMerit_1btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_1btag"),outputDir,cutString);
   drawNumEvents(h_FigOfMerit_2btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_2btag"),outputDir,cutString);
+
+  std::map<int,TFile*> outFile;
+  std::map<int,TFile*> outFile_ref;
+  std::map<int,TFile*> outFile_data;
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+      outFile[ii] = new TFile(("output/LimitTree_BKG"+cutString[ii]+".root").c_str(),"RECREATE");
+      outFile[ii]->cd();
+      outTree[ii]->Write();
+      outFile[ii]->Close();
+
+      outFile_ref[ii] = new TFile(("output/LimitTree_Signal"+cutString[ii]+".root").c_str(),"RECREATE");
+      outFile_ref[ii]->cd();
+      outTree_ref[ii]->Write();
+      outFile_ref[ii]->Close();
+
+      outFile_data[ii] = new TFile(("output/LimitTree_Data"+cutString[ii]+".root").c_str(),"RECREATE");
+      outFile_data[ii]->cd();
+      outTree_data[ii]->Write();
+      outFile_data[ii]->Close();
+  }
 
 }
 
