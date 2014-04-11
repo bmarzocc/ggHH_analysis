@@ -570,7 +570,7 @@ int main(int argc, char** argv)
    outTree[ii] -> Branch("jet2_btagSFErrorDown_M",  &jet2_btagSFErrorDown_M_output,      "jet2_btagSFErrorDown_M/F");
    outTree[ii] -> Branch("jet2_btagEff_M",          &jet2_btagEff_M_output,              "jet2_btagEff_M/F");
    outTree[ii] -> Branch("jet2_btagEffError_M",     &jet2_btagEffError_M_output,         "jet2_btagEffError_M/F");
-   outTree[ii] -> Branch("jet2_flavour",            &jet2_flavour_output,                "jet2_flavour/F");
+   outTree[ii] -> Branch("jet2_flavour",            &jet2_flavour_output,                "jet2_flavour/I");
    outTree[ii] -> Branch("mgg",                     &mgg_output,                         "mgg/F");
    outTree[ii] -> Branch("mjj",                     &mjj_output,                         "mjj/F");
    outTree[ii] -> Branch("mtot",                    &mtot_output,                        "mtot/F");
@@ -613,7 +613,7 @@ int main(int argc, char** argv)
    outTree_ref[ii] -> Branch("jet1_btagSFErrorDown_M",  &jet1_btagSFErrorDown_M_output,      "jet1_btagSFErrorDown_M/F");
    outTree_ref[ii] -> Branch("jet1_btagEff_M",          &jet1_btagEff_M_output,              "jet1_btagEff_M/F");
    outTree_ref[ii] -> Branch("jet1_btagEffError_M",     &jet1_btagEffError_M_output,         "jet1_btagEffError_M/F");
-   outTree_ref[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/F");
+   outTree_ref[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/I");
    outTree_ref[ii] -> Branch("jet2_pt",                 &jet2_pt_output,                     "jet2_pt/F");
    outTree_ref[ii] -> Branch("jet2_e",                  &jet2_e_output,                      "jet2_e/F");
    outTree_ref[ii] -> Branch("jet2_eta",                &jet2_eta_output,                    "jet2_eta/F");
@@ -668,7 +668,7 @@ int main(int argc, char** argv)
    outTree_data[ii] -> Branch("jet1_btagSFErrorDown_M",  &jet1_btagSFErrorDown_M_output,      "jet1_btagSFErrorDown_M/F");
    outTree_data[ii] -> Branch("jet1_btagEff_M",          &jet1_btagEff_M_output,              "jet1_btagEff_M/F");
    outTree_data[ii] -> Branch("jet1_btagEffError_M",     &jet1_btagEffError_M_output,         "jet1_btagEffError_M/F");
-   outTree_data[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/F");
+   outTree_data[ii] -> Branch("jet1_flavour",            &jet1_flavour_output,                "jet1_flavour/I");
    outTree_data[ii] -> Branch("jet2_pt",                 &jet2_pt_output,                     "jet2_pt/F");
    outTree_data[ii] -> Branch("jet2_e",                  &jet2_e_output,                      "jet2_e/F");
    outTree_data[ii] -> Branch("jet2_eta",                &jet2_eta_output,                    "jet2_eta/F");
