@@ -478,12 +478,16 @@ int main(int argc, char** argv)
   float         jj_eta_output;
   float         jj_mass_output;
   float         jj_DR_output;
+  float         jj_DEta_output;
+  float         jj_DPhi_output;
   float         gg_pt_output;
   float         gg_e_output;
   float         gg_phi_output;
   float         gg_eta_output;
   float         gg_mass_output;
   float         gg_DR_output;
+  float         gg_DEta_output;
+  float         gg_DPhi_output;
   float         costhetastar_output;
   float         minDRgj_output;
   float         ggjj_pt_output;
@@ -492,6 +496,8 @@ int main(int argc, char** argv)
   float         ggjj_eta_output;
   float         ggjj_mass_output;
   float         ggjj_DR_output;
+  float         ggjj_DEta_output;
+  float         ggjj_DPhi_output;
    
   std::map<int,TTree*> outTree;
   outTree[0] = new TTree("TreeBkg","TreeBkg");
@@ -555,12 +561,16 @@ int main(int argc, char** argv)
    outTree[ii] -> Branch("jj_eta",                  &jj_eta_output,                      "jj_eta/F");
    outTree[ii] -> Branch("jj_mass",                 &jj_mass_output,                     "jj_mass/F");
    outTree[ii] -> Branch("jj_DR",                   &jj_DR_output,                       "jj_DR/F");
+   outTree[ii] -> Branch("jj_DEta",                 &jj_DEta_output,                     "jj_DEta/F");
+   outTree[ii] -> Branch("jj_DPhi",                 &jj_DPhi_output,                     "jj_DPhi/F");
    outTree[ii] -> Branch("gg_pt",                   &gg_pt_output,                       "gg_pt/F");
    outTree[ii] -> Branch("gg_e",                    &gg_e_output,                        "gg_e/F");
    outTree[ii] -> Branch("gg_phi",                  &gg_phi_output,                      "gg_phi/F");
    outTree[ii] -> Branch("gg_eta",                  &gg_eta_output,                      "gg_eta/F");
    outTree[ii] -> Branch("gg_mass",                 &gg_mass_output,                     "gg_mass/F");
    outTree[ii] -> Branch("gg_DR",                   &gg_DR_output,                       "gg_DR/F");
+   outTree[ii] -> Branch("gg_DEta",                 &gg_DEta_output,                     "gg_DEta/F");
+   outTree[ii] -> Branch("gg_DPhi",                 &gg_DPhi_output,                     "gg_DPhi/F");
    outTree[ii] -> Branch("costhetastar",            &costhetastar_output,                "costhetastar/F");
    outTree[ii] -> Branch("minDRgj",                 &minDRgj_output,                     "minDRgj/F");
    outTree[ii] -> Branch("ggjj_pt",                 &ggjj_pt_output,                     "ggjj_pt/F");
@@ -569,6 +579,8 @@ int main(int argc, char** argv)
    outTree[ii] -> Branch("ggjj_eta",                &ggjj_eta_output,                    "ggjj_eta/F");
    outTree[ii] -> Branch("ggjj_mass",               &ggjj_mass_output,                   "ggjj_mass/F");
    outTree[ii] -> Branch("ggjj_DR",                 &ggjj_DR_output,                     "ggjj_DR/F");
+   outTree[ii] -> Branch("ggjj_DEta",               &ggjj_DEta_output,                   "ggjj_DEta/F");
+   outTree[ii] -> Branch("ggjj_DPhi",               &ggjj_DPhi_output,                   "ggjj_DPhi/F");
   }
    
   TLorentzVector Pho1P4;
@@ -645,12 +657,16 @@ int main(int argc, char** argv)
           jj_eta_output = jj_eta;
           jj_mass_output = jj_mass;
           jj_DR_output = jj_DR;
+          jj_DEta_output = fabs(jet2_eta-jet1_eta);    
+          jj_DPhi_output = jet1P4.DeltaPhi(jet2P4);
           gg_pt_output = gg_pt;
           gg_e_output = gg_e;
           gg_phi_output = gg_phi;
           gg_eta_output = gg_eta;
           gg_mass_output = gg_mass;
           gg_DR_output = Pho1P4.DeltaR(Pho2P4);
+          gg_DEta_output = fabs(pho2_eta-pho1_eta);    
+          gg_DPhi_output = Pho1P4.DeltaPhi(Pho2P4);
           costhetastar_output = costhetastar;
           minDRgj_output = minDRgj;
           ggjj_pt_output = ggjj_pt;
@@ -658,6 +674,8 @@ int main(int argc, char** argv)
           ggjj_eta_output = ggjj_eta;
           ggjj_mass_output = ggjj_mass;
           ggjj_DR_output = DijetP4.DeltaR(DiPhoP4);
+          ggjj_DEta_output = fabs(gg_eta-jj_eta);    
+          ggjj_DPhi_output = DiPhoP4.DeltaPhi(DijetP4);
 
           evweight_output = evweight;
           float weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
@@ -736,12 +754,16 @@ int main(int argc, char** argv)
           jj_eta_output = jj_eta;
           jj_mass_output = jj_mass;
           jj_DR_output = jj_DR;
+          jj_DEta_output = fabs(jet2_eta-jet1_eta);    
+          jj_DPhi_output = jet1P4.DeltaPhi(jet2P4);
           gg_pt_output = gg_pt;
           gg_e_output = gg_e;
           gg_phi_output = gg_phi;
           gg_eta_output = gg_eta;
           gg_mass_output = gg_mass;
           gg_DR_output = Pho1P4.DeltaR(Pho2P4);
+          gg_DEta_output = fabs(pho2_eta-pho1_eta);    
+          gg_DPhi_output = Pho1P4.DeltaPhi(Pho2P4);
           costhetastar_output = costhetastar;
           minDRgj_output = minDRgj;
           ggjj_pt_output = ggjj_pt;
@@ -749,6 +771,9 @@ int main(int argc, char** argv)
           ggjj_eta_output = ggjj_eta;
           ggjj_mass_output = ggjj_mass;
           ggjj_DR_output = DijetP4.DeltaR(DiPhoP4);
+          ggjj_DEta_output = fabs(gg_eta-jj_eta);    
+          ggjj_DPhi_output = DiPhoP4.DeltaPhi(DijetP4);
+
 
           evweight_output = evweight;
           float weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
@@ -822,12 +847,16 @@ int main(int argc, char** argv)
           jj_eta_output = jj_eta;
           jj_mass_output = jj_mass;
           jj_DR_output = jj_DR;
+          jj_DEta_output = fabs(jet2_eta-jet1_eta);    
+          jj_DPhi_output = jet1P4.DeltaPhi(jet2P4);
           gg_pt_output = gg_pt;
           gg_e_output = gg_e;
           gg_phi_output = gg_phi;
           gg_eta_output = gg_eta;
           gg_mass_output = gg_mass;
           gg_DR_output = Pho1P4.DeltaR(Pho2P4);
+          gg_DEta_output = fabs(pho2_eta-pho1_eta);    
+          gg_DPhi_output = Pho1P4.DeltaPhi(Pho2P4);
           costhetastar_output = costhetastar;
           minDRgj_output = minDRgj;
           ggjj_pt_output = ggjj_pt;
@@ -835,6 +864,8 @@ int main(int argc, char** argv)
           ggjj_eta_output = ggjj_eta;
           ggjj_mass_output = ggjj_mass;
           ggjj_DR_output = DijetP4.DeltaR(DiPhoP4);
+          ggjj_DEta_output = fabs(gg_eta-jj_eta);    
+          ggjj_DPhi_output = DiPhoP4.DeltaPhi(DijetP4);
 
           evweight_output = evweight;
           float weightBtagSF_output = eventWeight_2jets("medium", jet1_btagSF_M, jet2_btagSF_M, jet1_btagEff_M, jet2_btagEff_M, jet1_csvBtag, jet2_csvBtag);
