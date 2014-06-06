@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   std::cout << "arcg: " << argc << std::endl;
   
   //Check if all nedeed arguments to parse are there
-  if(argc != 2)
+  if(argc != 3)
   {
     std::cerr << ">>>>> Analyses::usage: " << argv[0] << " configFileName" << std::endl ;
     return 1;
@@ -66,6 +66,8 @@ int main(int argc, char** argv)
  
   /// Parse the config file
   parseConfigFile (argv[1]) ;
+
+  int doPlots = atoi(argv[2]); 
   
   std::string inputList = gConfigParser -> readStringOption("Input::inputList");
   std::string inputRef = gConfigParser -> readStringOption("Input::inputRef");
@@ -105,13 +107,19 @@ int main(int argc, char** argv)
   }
   
   pos_total = pos;
-  
+  int nTotal = 0;
+
   for(int ii = 0; ii < pos_total; ii++){
+
+      nTotal = nTotal + ntu[ii]->GetEntries();
+
       if(ntu[ii]->GetEntries() == 0 )
-      {
-         std::cout << "Error: input file: " << ntu[ii]->GetName() << " is empty" << std::endl; 
-         return -1;
-      }
+         std::cout << "Input file: " << ntu[ii]->GetName() << " is empty" << std::endl; 
+  }
+
+  if(nTotal == 0){
+     std::cout << "Error: every file is empty" << std::endl; 
+     return -1;
   }
 
   char cutName[500];
@@ -154,6 +162,7 @@ int main(int argc, char** argv)
   int           category;
   float         event;
   float         evweight;
+  float         evweight_w_btagSF;
   float         pho1_pt;
   float         pho1_e;
   float         pho1_phi;
@@ -220,6 +229,7 @@ int main(int argc, char** argv)
    TBranch        *b_category;   //!
    TBranch        *b_event;   //!
    TBranch        *b_evweight;   //!
+   TBranch        *b_evweight_w_btagSF;   //!
    TBranch        *b_pho1_pt;   //!
    TBranch        *b_pho1_e;   //!
    TBranch        *b_pho1_phi;   //!
@@ -286,6 +296,7 @@ int main(int argc, char** argv)
    ntu[ii]->SetBranchAddress("category", &category, &b_category);
    ntu[ii]->SetBranchAddress("event", &event, &b_event);
    ntu[ii]->SetBranchAddress("evweight", &evweight, &b_evweight);
+   ntu[ii]->SetBranchAddress("evweight_w_btagSF", &evweight_w_btagSF, &b_evweight_w_btagSF);
    ntu[ii]->SetBranchAddress("pho1_pt", &pho1_pt, &b_pho1_pt);
    ntu[ii]->SetBranchAddress("pho1_e", &pho1_e, &b_pho1_e);
    ntu[ii]->SetBranchAddress("pho1_phi", &pho1_phi, &b_pho1_phi);
@@ -352,6 +363,7 @@ int main(int argc, char** argv)
    ntu_ref->SetBranchAddress("category", &category, &b_category);
    ntu_ref->SetBranchAddress("event", &event, &b_event);
    ntu_ref->SetBranchAddress("evweight", &evweight, &b_evweight);
+   ntu_ref->SetBranchAddress("evweight_w_btagSF", &evweight_w_btagSF, &b_evweight_w_btagSF);
    ntu_ref->SetBranchAddress("pho1_pt", &pho1_pt, &b_pho1_pt);
    ntu_ref->SetBranchAddress("pho1_e", &pho1_e, &b_pho1_e);
    ntu_ref->SetBranchAddress("pho1_phi", &pho1_phi, &b_pho1_phi);
@@ -524,9 +536,45 @@ int main(int argc, char** argv)
   float         weightBtagSF_output;
   float         weightBtagSFerrUp_output;
   float         weightBtagSFerrDown_output;
+  float         nEvents[pos_total][int(cutString.size())];
+  float         nEvents_ggPeak[pos_total][int(cutString.size())];
+  float         nEvents_1btag[pos_total][int(cutString.size())];
+  float         nEvents_ggPeak_1btag[pos_total][int(cutString.size())];
+  float         nEvents_2btag[pos_total][int(cutString.size())];
+  float         nEvents_ggPeak_2btag[pos_total][int(cutString.size())];
+
+  float         nEvents_signal[int(cutString.size())];
+  float         nEvents_signal_ggPeak[int(cutString.size())];
+  float         nEvents_signal_1btag[int(cutString.size())];
+  float         nEvents_signal_ggPeak_1btag[int(cutString.size())];
+  float         nEvents_signal_2btag[int(cutString.size())];
+  float         nEvents_signal_ggPeak_2btag[int(cutString.size())];
+
+  
+  for(int ii = 0; ii < pos_total; ii++)
+      for(int jj = 0; jj < int(cutString.size()); jj++){
+          nEvents[ii][jj] = 0.;
+          nEvents_ggPeak[ii][jj] = 0.;
+          nEvents_1btag[ii][jj] = 0.;
+          nEvents_ggPeak_1btag[ii][jj] = 0.;
+          nEvents_2btag[ii][jj] = 0.;
+          nEvents_ggPeak_2btag[ii][jj] = 0.;
+      }
+
+  
+  for(int jj = 0; jj < int(cutString.size()); jj++){
+      nEvents_signal[jj] = 0.;
+      nEvents_signal_ggPeak[jj] = 0.;
+      nEvents_signal_1btag[jj] = 0.;
+      nEvents_signal_ggPeak_1btag[jj] = 0.;
+      nEvents_signal_2btag[jj] = 0.;
+      nEvents_signal_ggPeak_2btag[jj] = 0.;
+  }
    
   std::map<int,TTree*> outTree;
-  std::map<int,TTree*> outTree_ref;
+  std::map<int,TTree*> outTree_nevents;
+  std::map<int,TTree*> outTree_ref;   
+  std::map<int,TTree*> outTree_ref_nevents;
   std::map<int,TTree*> outTree_data;
   
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
@@ -581,7 +629,20 @@ int main(int argc, char** argv)
    outTree[ii] -> Branch("weightBtagSF",            &weightBtagSF_output,                "weightBtagSF/F");
    outTree[ii] -> Branch("weightBtagSFerrUp",       &weightBtagSFerrUp_output,           "weightBtagSFerrUp/F");
    outTree[ii] -> Branch("weightBtagSFerrDown",     &weightBtagSFerrDown_output,         "weightBtagSFerrDown/F");
+  }
 
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+   outTree_nevents[ii] = new TTree("nEvents","nEvents");
+   outTree_nevents[ii]->SetDirectory(0);
+   for(int jj = 0; jj < pos_total; jj++){
+       outTree_nevents[ii] -> Branch(("nEvents_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents[jj][ii],         ("nEvents_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+       outTree_nevents[ii] -> Branch(("nEvents_ggPeak_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents_ggPeak[jj][ii],         ("nEvents_ggPeak_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+       outTree_nevents[ii] -> Branch(("nEvents_1btag_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents[jj][ii],         ("nEvents_1btag_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+       outTree_nevents[ii] -> Branch(("nEvents_ggPeak_1btag_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents_ggPeak[jj][ii],         ("nEvents_ggPeak_1btag_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+       outTree_nevents[ii] -> Branch(("nEvents_2btag_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents[jj][ii],         ("nEvents_2btag_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+       outTree_nevents[ii] -> Branch(("nEvents_ggPeak_2btag_"+std::string(ntu[jj]->GetName())).c_str(),     &nEvents_ggPeak[jj][ii],         ("nEvents_ggPeak_2btag_"+std::string(ntu[jj]->GetName())+"/F").c_str());
+   }
   }
 
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
@@ -638,7 +699,20 @@ int main(int argc, char** argv)
    outTree_ref[ii] -> Branch("weightBtagSFerrDown",     &weightBtagSFerrDown_output,         "weightBtagSFerrDown/F");
 
   }
-  
+
+  for(unsigned int ii = 0; ii < cutString.size(); ii++){
+
+   outTree_ref_nevents[ii] = new TTree("nEvents","nEvents");
+   outTree_ref_nevents[ii]->SetDirectory(0);
+   outTree_ref_nevents[ii] -> Branch("nEvents",&nEvents_signal[ii],"nEvents/F");
+   outTree_ref_nevents[ii] -> Branch("nEvents_ggPeak",&nEvents_signal_ggPeak[ii],"nEvents_ggPeak/F");
+   outTree_ref_nevents[ii] -> Branch("nEvents_1btag",&nEvents_signal_1btag[ii],"nEvents_1btag/F");
+   outTree_ref_nevents[ii] -> Branch("nEvents_ggPeak_1btag",&nEvents_signal_ggPeak_1btag[ii],"nEvents_ggPeak_1btag/F");
+   outTree_ref_nevents[ii] -> Branch("nEvents_2btag",&nEvents_signal_2btag[ii],"nEvents_2btag/F");
+   outTree_ref_nevents[ii] -> Branch("nEvents_ggPeak_2btag",&nEvents_signal_ggPeak_2btag[ii],"nEvents_ggPeak_2btag/F");
+       
+  }
+
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
 
    outTree_data[ii] = new TTree("TCVARS","TCVARS");
@@ -985,7 +1059,11 @@ int main(int argc, char** argv)
       for(int ientry = 0; ientry < ntu[nn]->GetEntries(); ientry++){
           if(ientry%100000==0) std::cout<<"--- Reading file:" << ntu[nn]->GetName() << " entry = "<< ientry <<std::endl;
           ntu[nn]->GetEntry(ientry);
-           
+
+          evweight = evweight_w_btagSF;
+
+          if(fabs(evweight) > 50.) continue;
+          
           event_output = event;
           pho1_pt_output = pho1_pt;
           pho1_e_output = pho1_e;
@@ -1084,6 +1162,10 @@ int main(int argc, char** argv)
 
               if(isGood == false) continue;
 
+              nEvents[nn][ii] = nEvents[nn][ii] + evweight;
+              if(category == 1) nEvents_1btag[nn][ii] = nEvents_1btag[nn][ii] + evweight;
+              if(category == 2) nEvents_2btag[nn][ii] = nEvents_2btag[nn][ii] + evweight;
+
               if(DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.){
 
                  ievent[ii]++;
@@ -1094,6 +1176,10 @@ int main(int argc, char** argv)
 
                  if(category == 2) ievent_2btag[ii]++;
                  if(category == 2) h_NEvents_2btag[ii]->Fill(ievent_2btag[ii],evweight);
+
+                 nEvents_ggPeak[nn][ii] = nEvents_ggPeak[nn][ii] + evweight;
+                 if(category == 1) nEvents_ggPeak_1btag[nn][ii] = nEvents_ggPeak_1btag[nn][ii] + evweight;
+                 if(category == 2) nEvents_ggPeak_2btag[nn][ii] = nEvents_ggPeak_2btag[nn][ii] + evweight;
               }
 
               if(DiPhoP4.M() < 120. || DiPhoP4.M() > 130.){
@@ -1174,6 +1260,9 @@ int main(int argc, char** argv)
       }
   }
 
+  for(unsigned int ii = 0; ii < cutString.size(); ii++)
+      outTree_nevents[ii] -> Fill();
+
   for(unsigned int ii = 0; ii<cutString.size();ii++){
       ievent[ii] = 0;
       ievent_1btag[ii] = 0;
@@ -1187,7 +1276,11 @@ int main(int argc, char** argv)
       if(ientry%100000==0) std::cout<<"--- Reading Ref_file entry = "<< ientry <<std::endl;
           ntu_ref->GetEntry(ientry);
            
-          evweight = evweight*0.264/100.; //BR HbbHgg;
+          //evweight = evweight*0.264/100.; //BR HbbHgg;
+
+          evweight = evweight_w_btagSF;
+          
+          if(fabs(evweight) > 50.) continue;
           
           event_output = event;
           pho1_pt_output = pho1_pt;
@@ -1286,6 +1379,11 @@ int main(int argc, char** argv)
 
               if(isGood == false) continue;
 
+              nEvents_signal[ii] = nEvents_signal[ii] + evweight;
+              if(category == 1) nEvents_signal_1btag[ii] = nEvents_signal_1btag[ii] + evweight;
+              if(category == 2) nEvents_signal_2btag[ii] = nEvents_signal_2btag[ii] + evweight;
+
+
               if(DiPhoP4.M() >= 120. && DiPhoP4.M() <= 130.){
 
                  ievent[ii]++;
@@ -1296,6 +1394,10 @@ int main(int argc, char** argv)
 
                  if(category == 2) ievent_2btag[ii]++;
                  if(category == 2) h_ref_NEvents_2btag[ii]->Fill(ievent_2btag[ii],evweight);
+
+                 nEvents_signal_ggPeak[ii] = nEvents_signal_ggPeak[ii] + evweight;
+                 if(category == 1) nEvents_signal_ggPeak_1btag[ii] = nEvents_signal_ggPeak_1btag[ii] + evweight;
+                 if(category == 2) nEvents_signal_ggPeak_2btag[ii] = nEvents_signal_ggPeak_2btag[ii] + evweight;
               }
 
               if(DiPhoP4.M() < 120. || DiPhoP4.M() > 130.){
@@ -1375,6 +1477,9 @@ int main(int argc, char** argv)
           }    
 
   }
+
+  for(unsigned int ii = 0; ii < cutString.size(); ii++)
+      outTree_ref_nevents[ii] -> Fill();
 
   for(unsigned int ii = 0; ii<cutString.size();ii++){
       ievent[ii] = 0;
@@ -1505,6 +1610,7 @@ int main(int argc, char** argv)
 
   }
  
+  if(doPlots != 0){
   for(unsigned int ii = 0; ii < cutString.size(); ii++){
 
       double integral = h_NEvents[ii]->Integral();
@@ -1560,7 +1666,7 @@ int main(int argc, char** argv)
           INT = h_NEvents_2btag[ii]->Integral();
           INT_REF = h_ref_NEvents_2btag[ii]->Integral();
        }
-       
+
        compareHistos(h_ref_PhoPt[jj][ii], h_PhoPt[jj][ii], std::string("g_pt"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_PhoEta[jj][ii], h_PhoEta[jj][ii], std::string("g_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
        compareHistos(h_ref_Pho1Eta[jj][ii], h_Pho1Eta[jj][ii], std::string("g1_eta"), std::string("signal"), std::string("bkg") , outputDir, doCUT, INT, INT_REF);
@@ -1632,7 +1738,10 @@ int main(int argc, char** argv)
       compareHistosSB(h_data_DiPhoPt_1btag_SB[ii],h_ref_DiPhoPt_1btag_SB[ii],h_DiPhoPt_1btag_SB[ii],std::string("gg_pt"), std::string("Data"), std::string("Signal"),std::string("Bkg") , outputDir, doCUT,integral_data_1btag_SB,integral_Ref_1btag_SB,integral_1btag_SB,std::string("_1btag"));
       compareHistosSB(h_data_DiPhoPt_2btag_SB[ii],h_ref_DiPhoPt_2btag_SB[ii],h_DiPhoPt_2btag_SB[ii],std::string("gg_pt"), std::string("Data"), std::string("Signal"),std::string("Bkg") , outputDir, doCUT,integral_data_2btag_SB,integral_Ref_2btag_SB,integral_2btag_SB,std::string("_2btag"));
       
+   }
   }
+
+  if(doPlots != 0){
 
   bool isLog = true;
   drawNumEvents(h_numberEvents,std::string("events"),isLog,std::string("bkg"),std::string("NumberEvents"),outputDir,cutString);
@@ -1646,6 +1755,8 @@ int main(int argc, char** argv)
   drawNumEvents(h_FigOfMerit_1btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_1btag"),outputDir,cutString);
   drawNumEvents(h_FigOfMerit_2btag,std::string("S/sqrt(S+B)"),isLog,std::string("bkg-signal"),std::string("FigOfMerit_2btag"),outputDir,cutString);
 
+  }
+
   std::map<int,TFile*> outFile;
   std::map<int,TFile*> outFile_ref;
   std::map<int,TFile*> outFile_data;
@@ -1654,11 +1765,13 @@ int main(int argc, char** argv)
       outFile[ii] = new TFile(("output/LimitTree_BKG"+cutString[ii]+".root").c_str(),"RECREATE");
       outFile[ii]->cd();
       outTree[ii]->Write();
+      outTree_nevents[ii]->Write(); 
       outFile[ii]->Close();
 
       outFile_ref[ii] = new TFile(("output/LimitTree_Signal"+cutString[ii]+".root").c_str(),"RECREATE");
       outFile_ref[ii]->cd();
       outTree_ref[ii]->Write();
+      outTree_ref_nevents[ii]->Write(); 
       outFile_ref[ii]->Close();
 
       outFile_data[ii] = new TFile(("output/LimitTree_Data"+cutString[ii]+".root").c_str(),"RECREATE");
